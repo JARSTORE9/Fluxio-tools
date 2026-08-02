@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Fluxio-Tools V8.4</title>
+    <title>Fluxio-Tools V8.5</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -38,6 +38,8 @@
             --wave1: rgba(108,60,225,0.08);
             --wave2: rgba(6,214,160,0.05);
             --wave3: rgba(0,191,255,0.04);
+            --tiktok: #00f2ea;
+            --tiktok-dark: #ff004f;
         }
 
         [data-theme="light"] {
@@ -579,7 +581,7 @@
         .news-item small { color: var(--text-dim); font-size: 10px; display: block; margin-top: 2px; }
 
         /* ============================================================
-                   VIDEO DOWNLOADER - COBALT - 150+ BARIS
+                   VIDEO DOWNLOADER - COBALT + TIKTOK - 200+ BARIS
                    ============================================================ */
         .downloader-input-group {
             display: flex; gap: 8px; margin-bottom: 12px;
@@ -704,6 +706,15 @@
         .downloader-success i {
             color: var(--secondary);
             margin-right: 8px;
+        }
+
+        .downloader-tiktok-badge {
+            background: linear-gradient(135deg, var(--tiktok-dark), var(--tiktok));
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
         }
 
         /* ============================================================
@@ -912,7 +923,7 @@
         <div class="app-logo">
             <i class="fas fa-bolt"></i>
             <span>Fluxio</span>
-            <span class="badge-version">v8.4</span>
+            <span class="badge-version">v8.5</span>
         </div>
         <div class="header-actions">
             <div class="online-dot"></div>
@@ -935,8 +946,8 @@
             <i class="fas fa-volume-mute"></i>
         </button>
         <div class="banner-text">
-            <span>⚡ Fluxio-Tools V8.4</span>
-            <span>📥 Cobalt Downloader</span>
+            <span>⚡ Fluxio-Tools V8.5</span>
+            <span>📥 TikTok + YouTube</span>
             <span>🌊 16 Fitur</span>
         </div>
     </div>
@@ -1150,33 +1161,31 @@
             </div>
         </div>
 
-        <!-- ===== VIDEO DOWNLOADER - COBALT API ===== -->
+        <!-- ===== VIDEO DOWNLOADER - TIKTOK + YOUTUBE ===== -->
         <div class="tab-panel" id="panel-downloader">
             <div class="card">
-                <div class="card-title"><i class="fas fa-download"></i> Cobalt Downloader</div>
+                <div class="card-title"><i class="fas fa-download"></i> Video Downloader</div>
 
                 <div class="downloader-platforms">
-                    <span class="platform-badge"><i class="fab fa-youtube" style="color:#FF0000;"></i> YouTube</span>
                     <span class="platform-badge"><i class="fab fa-tiktok" style="color:#00f2ea;"></i> TikTok</span>
+                    <span class="platform-badge"><i class="fab fa-youtube" style="color:#FF0000;"></i> YouTube</span>
                     <span class="platform-badge"><i class="fab fa-instagram" style="color:#E4405F;"></i> Instagram</span>
                     <span class="platform-badge"><i class="fab fa-facebook" style="color:#1877F2;"></i> Facebook</span>
                     <span class="platform-badge"><i class="fab fa-twitter" style="color:#1DA1F2;"></i> Twitter</span>
                     <span class="platform-badge"><i class="fab fa-reddit" style="color:#FF4500;"></i> Reddit</span>
-                    <span class="platform-badge"><i class="fab fa-vimeo" style="color:#1AB7EA;"></i> Vimeo</span>
-                    <span class="platform-badge"><i class="fas fa-link"></i> 30+ Platform</span>
                 </div>
 
                 <div class="downloader-input-group">
-                    <input type="text" id="mediaInput" placeholder="Masukkan URL video (YouTube, TikTok, dll)...">
+                    <input type="text" id="mediaInput" placeholder="Masukkan URL TikTok atau YouTube...">
                     <button onclick="downloadMedia()"><i class="fas fa-download"></i> Proses</button>
                 </div>
 
                 <div id="mediaResult">
                     <div class="downloader-empty">
                         <i class="fas fa-link"></i>
-                        <p>Masukkan URL video untuk download</p>
-                        <p style="font-size:11px;opacity:0.5;margin-top:4px;">Support: YouTube, TikTok, Instagram, Facebook, Twitter, Reddit, Vimeo & 30+ platform lainnya</p>
-                        <p style="font-size:10px;opacity:0.3;margin-top:6px;">⚡ Powered by Cobalt API (Gratis, No API Key)</p>
+                        <p>Masukkan URL TikTok atau YouTube</p>
+                        <p style="font-size:11px;opacity:0.5;margin-top:4px;">Support: TikTok, YouTube, Instagram, Facebook, Twitter, Reddit</p>
+                        <p style="font-size:10px;opacity:0.3;margin-top:6px;">⚡ TikTok via omkarcloud • YouTube via Cobalt</p>
                     </div>
                 </div>
             </div>
@@ -1189,12 +1198,12 @@
                     <div class="avatar">
                         <img src="https://raw.githubusercontent.com/JARSTORE9/Fluxio-tools/main/profile.jpg" alt="Creator">
                     </div>
-                    <h2>Fluxio-Tools V8.4</h2>
-                    <div class="role">📥 16 Fitur • Cobalt Downloader • Chat Realtime</div>
+                    <h2>Fluxio-Tools V8.5</h2>
+                    <div class="role">📥 16 Fitur • TikTok + YouTube Downloader</div>
                     <div style="margin-top:6px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-                        <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">v8.4</span>
+                        <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">v8.5</span>
                         <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">🔥 16 Fitur</span>
-                        <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">📥 Cobalt</span>
+                        <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">📥 TikTok</span>
                         <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">🌊 Ombak Kalem</span>
                     </div>
                 </div>
@@ -1208,7 +1217,7 @@
                     <div class="tech-item"><i class="fab fa-js" style="color:#F7DF1E;"></i><div class="tech-name">JavaScript</div><div class="tech-desc">Logic + API</div></div>
                     <div class="tech-item"><i class="fab fa-font-awesome" style="color:#339AF0;"></i><div class="tech-name">Font Awesome</div><div class="tech-desc">Icons</div></div>
                     <div class="tech-item"><i class="fas fa-cloud" style="color:#00BFFF;"></i><div class="tech-name">OpenWeather</div><div class="tech-desc">Cuaca</div></div>
-                    <div class="tech-item"><i class="fas fa-download" style="color:#FF6B35;"></i><div class="tech-name">Cobalt API</div><div class="tech-desc">Video Downloader</div></div>
+                    <div class="tech-item"><i class="fab fa-tiktok" style="color:#00f2ea;"></i><div class="tech-name">TikTok API</div><div class="tech-desc">TikTok Downloader</div></div>
                 </div>
             </div>
 
@@ -1229,7 +1238,7 @@
                     <div class="feature-item"><i class="fas fa-check"></i> Website Checker</div>
                     <div class="feature-item"><i class="fas fa-check"></i> Encode/Decode</div>
                     <div class="feature-item"><i class="fas fa-check"></i> File Sharing</div>
-                    <div class="feature-item"><i class="fas fa-check"></i> Cobalt Downloader</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> TikTok/YouTube Downloader</div>
                     <div class="feature-item"><i class="fas fa-check"></i> Video Banner</div>
                 </div>
             </div>
@@ -1237,9 +1246,9 @@
             <div class="card">
                 <div class="card-title"><i class="fas fa-info-circle"></i> Tentang</div>
                 <p style="color:var(--text-dim);font-size:13px;line-height:1.7;">
-                    <strong>Fluxio-Tools V8.4</strong> adalah dashboard all-in-one dengan 
-                    <strong>16 fitur</strong>, <strong>Cobalt Downloader</strong> (support 30+ platform), 
-                    dan <strong>chat realtime</strong>. Efek ombak kalem & animasi ringan.
+                    <strong>Fluxio-Tools V8.5</strong> adalah dashboard all-in-one dengan 
+                    <strong>16 fitur</strong>, <strong>TikTok Downloader</strong> (via omkarcloud API), 
+                    dan <strong>YouTube Downloader</strong> (via Cobalt). Efek ombak kalem & animasi ringan.
                 </p>
                 <div style="margin-top:8px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
                     <span style="display:flex;align-items:center;gap:4px;color:var(--text-dim);font-size:12px;">
@@ -1269,7 +1278,7 @@
     </nav>
 
     <!-- ============================================================
-    SCRIPTS - COBALT API
+    SCRIPTS - TIKTOK + YOUTUBE
     ============================================================ -->
     <script>
         // ============================================================
@@ -1361,7 +1370,7 @@
         });
 
         // ============================================================
-        // CONFIG - COBALT API (GRATIS, NO API KEY!)
+        // CONFIG - TIKTOK + COBALT
         // ============================================================
         const CONFIG = {
             WEATHER_API_KEY: '8ebbaba25fde5e26472b0380345298d1',
@@ -1372,7 +1381,10 @@
             GNEWS_API_URL: 'https://gnews.io/api/v4/top-headlines',
             CURRENTS_API_KEY: 'DzXC9X1iBzYVwPGhqfLDmjE1_r3P2d7BC2FyzSXuMVZQHlut',
             CURRENTS_API_URL: 'https://api.currentsapi.services/v1/latest-news',
-            // COBALT API - GRATIS, NO API KEY!
+            // TIKTOK API (omkarcloud)
+            TIKTOK_API_KEY: 'ok_6c2722711c70ee7f5a38e266dee681b9',
+            TIKTOK_API_URL: 'https://tiktok-scraper.omkar.cloud/tiktok/videos/details',
+            // COBALT API (YouTube & lainnya)
             COBALT_API_URL: 'https://api.cobalt.tools/api/json'
         };
 
@@ -1920,7 +1932,7 @@
         }
 
         // ============================================================
-        // VIDEO DOWNLOADER - COBALT API (GRATIS, NO API KEY!)
+        // VIDEO DOWNLOADER - TIKTOK (omkarcloud) + YOUTUBE (Cobalt)
         // ============================================================
         async function downloadMedia() {
             const url = document.getElementById('mediaInput').value.trim();
@@ -1938,65 +1950,178 @@
                 </div>
             `;
 
+            // DETEKSI PLATFORM
+            const isTikTok = url.includes('tiktok.com');
+            const isYouTube = url.includes('youtube.com') || url.includes('youtu.be');
+
             try {
-                const response = await fetch(CONFIG.COBALT_API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        url: url,
-                        videoQuality: '1080',
-                        audioFormat: 'mp3'
-                    })
-                });
+                let data = null;
 
-                const data = await response.json();
+                if (isTikTok) {
+                    // --- TIKTOK VIA omkarcloud ---
+                    const response = await fetch(
+                        `${CONFIG.TIKTOK_API_URL}?video_url=${encodeURIComponent(url)}`, {
+                            headers: {
+                                'API-Key': CONFIG.TIKTOK_API_KEY
+                            }
+                        }
+                    );
+                    data = await response.json();
 
-                if (data.status === 'success' && data.url) {
-                    // Cobalt berhasil ngasih link download
-                    const filename = data.filename || 'video';
-                    const fileSize = data.size || '';
+                    if (data && data.media) {
+                        const videoUrl = data.media.hd_video_url || data.media.video_url;
+                        const author = data.author?.handle || 'TikTok User';
+                        const caption = data.caption || 'TikTok Video';
+                        const stats = data.stats || {};
 
-                    container.innerHTML = `
-                        <div class="download-result">
-                            <div class="downloader-success">
-                                <i class="fas fa-check-circle"></i> <strong>✅ Siap Download!</strong>
-                                <span style="font-size:12px;color:var(--text-dim);display:block;margin-top:2px;">File siap diunduh</span>
-                            </div>
-                            <div class="result-item">
-                                <div class="result-icon"><i class="fas fa-download"></i></div>
-                                <div class="result-info">
-                                    <div class="result-title">${filename}</div>
-                                    <div class="result-detail">${fileSize ? fileSize + ' • ' : ''}Klik untuk download</div>
+                        container.innerHTML = `
+                            <div class="download-result">
+                                <div class="downloader-success">
+                                    <i class="fas fa-check-circle"></i> <strong>✅ Siap Download!</strong>
+                                    <span style="font-size:12px;color:var(--text-dim);display:block;margin-top:2px;">
+                                        <span class="downloader-tiktok-badge"><i class="fab fa-tiktok"></i> TikTok</span>
+                                        @${author}
+                                    </span>
                                 </div>
-                                <a href="${data.url}" target="_blank" class="result-download" download>
-                                    <i class="fas fa-download"></i> Download
-                                </a>
+                                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;padding:8px 12px;background:var(--glass);border-radius:var(--radius-sm);">
+                                    <span style="font-size:11px;color:var(--text-dim);"><i class="fas fa-eye"></i> ${stats.views || 0}</span>
+                                    <span style="font-size:11px;color:var(--text-dim);"><i class="fas fa-heart"></i> ${stats.likes || 0}</span>
+                                    <span style="font-size:11px;color:var(--text-dim);"><i class="fas fa-comment"></i> ${stats.comments || 0}</span>
+                                    <span style="font-size:11px;color:var(--text-dim);"><i class="fas fa-share"></i> ${stats.shares || 0}</span>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-icon"><i class="fas fa-download"></i></div>
+                                    <div class="result-info">
+                                        <div class="result-title">${caption.substring(0, 50)}${caption.length > 50 ? '...' : ''}</div>
+                                        <div class="result-detail">HD Video • TikTok</div>
+                                    </div>
+                                    <a href="${videoUrl}" target="_blank" class="result-download" download>
+                                        <i class="fas fa-download"></i> Download
+                                    </a>
+                                </div>
+                                ${data.media.watermarked_video_url ? `
+                                    <div class="result-item">
+                                        <div class="result-icon"><i class="fas fa-water"></i></div>
+                                        <div class="result-info">
+                                            <div class="result-title">Dengan Watermark</div>
+                                            <div class="result-detail">Video dengan watermark</div>
+                                        </div>
+                                        <a href="${data.media.watermarked_video_url}" target="_blank" class="result-download" download>
+                                            <i class="fas fa-download"></i> Download
+                                        </a>
+                                    </div>
+                                ` : ''}
                             </div>
-                            <div style="text-align:center;margin-top:8px;font-size:10px;color:var(--text-dim);opacity:0.5;">
-                                ⚡ Powered by Cobalt API
+                        `;
+                    } else {
+                        container.innerHTML = `
+                            <div style="text-align:center;padding:20px;color:#FF006E;">
+                                <i class="fas fa-exclamation-circle" style="font-size:32px;display:block;margin-bottom:8px;"></i>
+                                <p>⚠️ Gagal mengambil data TikTok</p>
+                                <p style="font-size:12px;opacity:0.5;margin-top:8px;">${data?.message || 'Coba periksa URL atau API key'}</p>
                             </div>
-                        </div>
-                    `;
+                        `;
+                    }
 
-                    // Animasi muncul
-                    document.querySelectorAll('.result-item').forEach((el, i) => {
-                        el.style.animation = `fadeSlideUp 0.3s ease ${i * 0.05}s both`;
+                } else if (isYouTube) {
+                    // --- YOUTUBE VIA COBALT ---
+                    const response = await fetch(CONFIG.COBALT_API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            url: url,
+                            videoQuality: '720',
+                            audioFormat: 'mp3'
+                        })
                     });
+                    data = await response.json();
+
+                    if (data.status === 'tunnel' || data.status === 'redirect' || data.url) {
+                        const downloadUrl = data.url || data.redirect;
+                        const filename = data.filename || 'video';
+
+                        container.innerHTML = `
+                            <div class="download-result">
+                                <div class="downloader-success">
+                                    <i class="fas fa-check-circle"></i> <strong>✅ Siap Download!</strong>
+                                    <span style="font-size:12px;color:var(--text-dim);display:block;margin-top:2px;">
+                                        <i class="fab fa-youtube" style="color:#FF0000;"></i> YouTube
+                                    </span>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-icon"><i class="fas fa-download"></i></div>
+                                    <div class="result-info">
+                                        <div class="result-title">${filename}</div>
+                                        <div class="result-detail">Video • YouTube</div>
+                                    </div>
+                                    <a href="${downloadUrl}" target="_blank" class="result-download" download>
+                                        <i class="fas fa-download"></i> Download
+                                    </a>
+                                </div>
+                                <div style="text-align:center;margin-top:8px;font-size:10px;color:var(--text-dim);opacity:0.5;">
+                                    ⚡ Powered by Cobalt API
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        container.innerHTML = `
+                            <div style="text-align:center;padding:20px;color:#FF006E;">
+                                <i class="fas fa-exclamation-circle" style="font-size:32px;display:block;margin-bottom:8px;"></i>
+                                <p>⚠️ Gagal mengambil data YouTube</p>
+                                <p style="font-size:12px;opacity:0.5;margin-top:8px;">${data.text || 'Coba periksa URL'}</p>
+                            </div>
+                        `;
+                    }
 
                 } else {
-                    // Coba ambil error message dari Cobalt
-                    const errorMsg = data.text || data.message || 'URL tidak valid atau platform tidak didukung';
-                    container.innerHTML = `
-                        <div style="text-align:center;padding:20px;color:#FF006E;">
-                            <i class="fas fa-exclamation-circle" style="font-size:32px;display:block;margin-bottom:8px;"></i>
-                            <p>⚠️ ${errorMsg}</p>
-                            <p style="font-size:12px;opacity:0.5;margin-top:8px;">Pastikan URL benar dan platform didukung</p>
-                        </div>
-                    `;
+                    // --- PLATFORM LAIN via Cobalt ---
+                    const response = await fetch(CONFIG.COBALT_API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            url: url,
+                            videoQuality: '720',
+                            audioFormat: 'mp3'
+                        })
+                    });
+                    data = await response.json();
+
+                    if (data.status === 'tunnel' || data.status === 'redirect' || data.url) {
+                        const downloadUrl = data.url || data.redirect;
+                        const filename = data.filename || 'video';
+
+                        container.innerHTML = `
+                            <div class="download-result">
+                                <div class="downloader-success">
+                                    <i class="fas fa-check-circle"></i> <strong>✅ Siap Download!</strong>
+                                </div>
+                                <div class="result-item">
+                                    <div class="result-icon"><i class="fas fa-download"></i></div>
+                                    <div class="result-info">
+                                        <div class="result-title">${filename}</div>
+                                        <div class="result-detail">Media dari URL</div>
+                                    </div>
+                                    <a href="${downloadUrl}" target="_blank" class="result-download" download>
+                                        <i class="fas fa-download"></i> Download
+                                    </a>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        container.innerHTML = `
+                            <div style="text-align:center;padding:20px;color:#FF006E;">
+                                <i class="fas fa-exclamation-circle" style="font-size:32px;display:block;margin-bottom:8px;"></i>
+                                <p>⚠️ Platform tidak didukung</p>
+                                <p style="font-size:12px;opacity:0.5;margin-top:8px;">Support: TikTok, YouTube, Instagram, Facebook, Twitter, Reddit</p>
+                            </div>
+                        `;
+                    }
                 }
+
+                // Animasi muncul
+                document.querySelectorAll('.result-item').forEach((el, i) => {
+                    el.style.animation = `fadeSlideUp 0.3s ease ${i * 0.05}s both`;
+                });
 
             } catch (error) {
                 console.error('Download Error:', error);
@@ -2029,12 +2154,12 @@
             setInterval(getQuote, 300000);
             setInterval(getNews, 300000);
 
-            console.log('🚀 Fluxio-Tools V8.4 Loaded!');
+            console.log('🚀 Fluxio-Tools V8.5 Loaded!');
             console.log('📝 14.000+ baris code');
             console.log('🌊 Efek ombak kalem aktif');
             console.log('💬 Chat Realtime aktif');
             console.log('📱 Phone Check aktif');
-            console.log('📥 Cobalt Downloader aktif! (Gratis, No API Key)');
+            console.log('📥 TikTok + YouTube Downloader aktif!');
             console.log('✨ 16 features - ALL WORKING!');
         };
     </script>
