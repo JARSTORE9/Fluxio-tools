@@ -861,7 +861,7 @@
         <div class="app-logo">
             <i class="fas fa-bolt"></i>
             <span>Fluxio</span>
-            <span class="badge-version">v8.0</span>
+            <span class="badge-version">v8.1</span>
         </div>
         <div class="header-actions">
             <div class="online-dot"></div>
@@ -884,7 +884,7 @@
             <i class="fas fa-volume-mute"></i>
         </button>
         <div class="banner-text">
-            <span>⚡ Fluxio-Tools V8</span>
+            <span>⚡ Fluxio-Tools V8.1</span>
             <span>🌊 16 Fitur</span>
             <span>🤖 AI Fix</span>
         </div>
@@ -1120,10 +1120,10 @@
                     <div class="avatar">
                         <img src="https://raw.githubusercontent.com/JARSTORE9/Fluxio-tools/main/profile.jpg" alt="Creator">
                     </div>
-                    <h2>Fluxio-Tools V8</h2>
+                    <h2>Fluxio-Tools V8.1</h2>
                     <div class="role">🌊 16 Fitur • Chat Realtime • AI Fix</div>
                     <div style="margin-top:6px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-                        <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">v8.0</span>
+                        <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">v8.1</span>
                         <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">🔥 16 Fitur</span>
                         <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">🌊 Ombak Kalem</span>
                         <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">🤖 AI Fix</span>
@@ -1168,7 +1168,7 @@
             <div class="card">
                 <div class="card-title"><i class="fas fa-info-circle"></i> Tentang</div>
                 <p style="color:var(--text-dim);font-size:13px;line-height:1.7;">
-                    <strong>Fluxio-Tools V8</strong> adalah dashboard all-in-one dengan 
+                    <strong>Fluxio-Tools V8.1</strong> adalah dashboard all-in-one dengan 
                     <strong>16 fitur</strong>, <strong>chat realtime</strong>, dan 
                     <strong>AI Assistant</strong>. Efek ombak kalem & animasi ringan.
                 </p>
@@ -1292,7 +1292,7 @@
         });
 
         // ============================================================
-        // CONFIG
+        // CONFIG - API KEY UPDATED!
         // ============================================================
         const CONFIG = {
             WEATHER_API_KEY: '8ebbaba25fde5e26472b0380345298d1',
@@ -1303,7 +1303,8 @@
             GNEWS_API_URL: 'https://gnews.io/api/v4/top-headlines',
             CURRENTS_API_KEY: 'DzXC9X1iBzYVwPGhqfLDmjE1_r3P2d7BC2FyzSXuMVZQHlut',
             CURRENTS_API_URL: 'https://api.currentsapi.services/v1/latest-news',
-            GEMINI_API_KEY: 'AIzaSyDP-aNFSPifduHakttfdGN-bG4TN367Eak',
+            // API KEY GEMINI YANG BARU!
+            GEMINI_API_KEY: 'AQ.Ab8RN6Jzwll87oT94FCqfbs03u-b1nOtUmNZEfq4JNQMrGQeoA',
             GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent'
         };
 
@@ -1851,7 +1852,7 @@
         }
 
         // ============================================================
-        // AI CHAT - FIXED 100%!
+        // AI CHAT - FIXED 100% WITH NEW API KEY!
         // ============================================================
         async function askAI() {
             const input = document.getElementById('aiInput');
@@ -1899,7 +1900,6 @@
                 let answer = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
                 if (!answer) {
-                    // Coba alternatif
                     if (data.error) {
                         answer = '⚠️ Error: ' + (data.error.message || 'Coba lagi nanti');
                     } else {
@@ -1943,12 +1943,12 @@
             setInterval(getQuote, 300000);
             setInterval(getNews, 300000);
 
-            console.log('🚀 Fluxio-Tools V8 Loaded!');
+            console.log('🚀 Fluxio-Tools V8.1 Loaded!');
             console.log('📝 14.000+ baris code');
             console.log('🌊 Efek ombak kalem aktif');
             console.log('💬 Chat Realtime aktif');
             console.log('📱 Phone Check aktif');
-            console.log('🤖 AI Assistant FIXED!');
+            console.log('🤖 AI Assistant FIXED with new API key!');
             console.log('✨ 16 features - ALL WORKING!');
         };
     </script>
