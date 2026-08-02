@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Fluxio-Tools V8.5</title>
+    <title>Fluxio-Tools V9</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- QRCode.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <!-- html5-qrcode untuk scan -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    
     <style>
         /* ============================================================
-                   ROOT & RESET - 300+ BARIS
+                   ROOT & RESET - 400+ BARIS
                    ============================================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
@@ -38,8 +43,8 @@
             --wave1: rgba(108,60,225,0.08);
             --wave2: rgba(6,214,160,0.05);
             --wave3: rgba(0,191,255,0.04);
-            --tiktok: #00f2ea;
-            --tiktok-dark: #ff004f;
+            --qr-bg: #FFFFFF;
+            --qr-fg: #000000;
         }
 
         [data-theme="light"] {
@@ -52,6 +57,8 @@
             --wave1: rgba(108,60,225,0.05);
             --wave2: rgba(6,214,160,0.03);
             --wave3: rgba(0,191,255,0.02);
+            --qr-bg: #FFFFFF;
+            --qr-fg: #000000;
         }
 
         [data-theme="neon"] {
@@ -65,6 +72,8 @@
             --wave1: rgba(255,0,110,0.08);
             --wave2: rgba(0,229,255,0.05);
             --wave3: rgba(255,215,0,0.03);
+            --qr-bg: #0A0A0A;
+            --qr-fg: #FF006E;
         }
 
         html, body {
@@ -172,21 +181,22 @@
             100% { transform: rotate(360deg); }
         }
 
-        @keyframes download-pulse {
-            0%,100% { transform: scale(1); }
-            50% { transform: scale(1.05); background: rgba(108,60,225,0.2); }
+        @keyframes qr-pop {
+            0% { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+            60% { opacity: 1; transform: scale(1.05) rotate(2deg); }
+            100% { transform: scale(1) rotate(0deg); }
         }
 
-        @keyframes result-appear {
-            0% { opacity: 0; transform: translateY(10px) scale(0.95); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
+        @keyframes scan-line {
+            0% { top: 0; }
+            100% { top: 100%; }
         }
 
         .animate-float { animation: float-soft 3s ease-in-out infinite; }
         .animate-pulse { animation: pulse-glow 2s ease-in-out infinite; }
         .animate-spin { animation: spin-slow 10s linear infinite; }
         .animate-shimmer { background-size: 200% auto; animation: shimmer 3s ease-in-out infinite; }
-        .animate-download { animation: download-pulse 1.5s ease-in-out infinite; }
+        .animate-qr-pop { animation: qr-pop 0.5s ease; }
 
         /* ============================================================
                    HEADER - 80+ BARIS
@@ -581,25 +591,25 @@
         .news-item small { color: var(--text-dim); font-size: 10px; display: block; margin-top: 2px; }
 
         /* ============================================================
-                   VIDEO DOWNLOADER - COBALT + TIKTOK - 200+ BARIS
+                   QR CODE GENERATOR - 250+ BARIS
                    ============================================================ */
-        .downloader-input-group {
+        .qr-input-group {
             display: flex; gap: 8px; margin-bottom: 12px;
         }
 
-        .downloader-input-group input {
+        .qr-input-group input {
             flex: 1; padding: 12px 16px;
             background: rgba(0,0,0,0.15); border: 1px solid var(--border);
             border-radius: var(--radius-sm); color: var(--text);
             outline: none; font-size: 13px; transition: var(--transition);
         }
 
-        .downloader-input-group input:focus {
+        .qr-input-group input:focus {
             border-color: var(--primary-light);
             box-shadow: 0 0 20px var(--primary-glow);
         }
 
-        .downloader-input-group button {
+        .qr-input-group button {
             padding: 12px 20px;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border: none; border-radius: var(--radius-sm);
@@ -608,113 +618,99 @@
             animation: pulse-glow 2s ease-in-out infinite;
         }
 
-        .downloader-input-group button:active { transform: scale(0.95); }
-        .downloader-input-group button:hover { transform: scale(1.02); }
+        .qr-input-group button:active { transform: scale(0.95); }
+        .qr-input-group button:hover { transform: scale(1.02); }
 
-        .downloader-platforms {
-            display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;
+        .qr-options {
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px;
         }
 
-        .downloader-platforms .platform-badge {
-            padding: 4px 12px; border-radius: 20px;
-            font-size: 10px; font-weight: 600;
-            background: var(--glass); border: 1px solid var(--border);
-            color: var(--text-dim); transition: var(--transition);
-            display: flex; align-items: center; gap: 4px;
+        .qr-options label {
+            font-size: 11px; color: var(--text-dim); display: flex; flex-direction: column; gap: 4px;
         }
 
-        .downloader-platforms .platform-badge i {
-            font-size: 12px;
+        .qr-options input[type="color"] {
+            width: 100%; height: 36px; padding: 2px; border: 1px solid var(--border);
+            border-radius: var(--radius-sm); background: transparent; cursor: pointer;
         }
 
-        .downloader-platforms .platform-badge:hover {
-            border-color: var(--primary-light);
-            color: var(--text);
-            transform: translateY(-2px);
+        .qr-options input[type="range"] {
+            width: 100%; accent-color: var(--primary);
         }
 
-        .download-result {
-            animation: result-appear 0.4s ease;
+        .qr-options select {
+            padding: 6px 10px; background: rgba(0,0,0,0.15); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); color: var(--text); outline: none; font-size: 12px;
         }
 
-        .download-result .result-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 10px 12px; background: var(--glass);
-            border-radius: var(--radius-sm); margin-bottom: 6px;
-            transition: var(--transition);
+        .qr-result-container {
+            text-align: center; padding: 16px; background: var(--glass);
+            border-radius: var(--radius-sm); min-height: 180px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
 
-        .download-result .result-item:hover {
-            border-left: 3px solid var(--primary-light);
-            transform: translateX(4px);
+        .qr-result-container #qrCodeDisplay {
+            animation: qr-pop 0.5s ease;
         }
 
-        .download-result .result-item .result-icon {
-            font-size: 20px; color: var(--primary-light);
-            width: 36px; text-align: center;
-            animation: float-soft 3s ease-in-out infinite;
+        .qr-result-container #qrCodeDisplay canvas {
+            max-width: 100%; height: auto; border-radius: var(--radius-sm);
+            box-shadow: 0 0 30px var(--primary-glow);
         }
 
-        .download-result .result-item .result-info {
-            flex: 1; min-width: 0;
+        .qr-empty-state {
+            color: var(--text-dim); font-size: 13px;
         }
 
-        .download-result .result-item .result-info .result-title {
-            font-size: 13px; font-weight: 500;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-
-        .download-result .result-item .result-info .result-detail {
-            font-size: 10px; color: var(--text-dim);
-        }
-
-        .download-result .result-item .result-download {
-            padding: 6px 14px;
-            background: linear-gradient(135deg, var(--secondary), #059669);
-            border: none; border-radius: 8px;
-            color: white; font-size: 12px; font-weight: 600;
-            cursor: pointer; transition: var(--transition);
-            text-decoration: none; display: inline-block;
-        }
-
-        .download-result .result-item .result-download:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--secondary-glow);
-        }
-
-        .download-result .result-item .result-download i {
-            margin-right: 4px;
-        }
-
-        .downloader-empty {
-            text-align: center; color: var(--text-dim);
-            padding: 20px; font-size: 13px;
-        }
-
-        .downloader-empty i {
+        .qr-empty-state i {
             font-size: 36px; opacity: 0.2; display: block; margin-bottom: 8px;
         }
 
-        .downloader-success {
-            border-left: 3px solid var(--secondary);
-            padding: 12px 14px;
-            background: rgba(6,214,160,0.05);
-            border-radius: var(--radius-sm);
-            margin-bottom: 10px;
+        .qr-actions {
+            display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;
         }
 
-        .downloader-success i {
-            color: var(--secondary);
-            margin-right: 8px;
+        .qr-actions button {
+            flex: 1; min-width: 80px; padding: 10px 14px; border: none;
+            border-radius: var(--radius-sm); font-weight: 600; font-size: 12px;
+            cursor: pointer; transition: var(--transition);
         }
 
-        .downloader-tiktok-badge {
-            background: linear-gradient(135deg, var(--tiktok-dark), var(--tiktok));
-            color: white;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 600;
+        .qr-actions button:active { transform: scale(0.95); }
+
+        .btn-qr-download {
+            background: linear-gradient(135deg, var(--secondary), #059669); color: white;
+        }
+
+        .btn-qr-scan {
+            background: linear-gradient(135deg, var(--gold), #FF6B35); color: white;
+        }
+
+        .btn-qr-copy {
+            background: var(--glass); color: var(--text); border: 1px solid var(--border);
+        }
+
+        .qr-scan-container {
+            margin-top: 12px; padding: 12px; background: var(--glass);
+            border-radius: var(--radius-sm); display: none;
+        }
+
+        .qr-scan-container.active {
+            display: block; animation: fadeSlideUp 0.3s ease;
+        }
+
+        #qr-reader {
+            width: 100%; max-width: 300px; margin: 0 auto;
+        }
+
+        #qr-reader video {
+            border-radius: var(--radius-sm); border: 2px solid var(--border);
+        }
+
+        .qr-scan-result {
+            margin-top: 8px; padding: 8px 12px; background: rgba(6,214,160,0.05);
+            border-radius: var(--radius-sm); border-left: 3px solid var(--secondary);
+            font-size: 13px; word-break: break-all;
         }
 
         /* ============================================================
@@ -764,7 +760,7 @@
         .chat-username-input button:active { transform: scale(0.95); }
 
         /* ============================================================
-                   CREDITS - 100+ BARIS
+                   CREDITS - 120+ BARIS
                    ============================================================ */
         .credits-hero { text-align: center; padding: 16px 0; }
         .credits-hero .avatar {
@@ -785,6 +781,47 @@
             background-size: 200% auto; animation: shimmer 3s ease-in-out infinite;
         }
         .credits-hero .role { color: var(--text-dim); font-size: 13px; margin-top: 2px; animation: float-soft 3s ease-in-out infinite; }
+
+        .credits-contact {
+            display: flex; align-items: center; gap: 12px; justify-content: center;
+            padding: 10px; background: var(--glass); border-radius: var(--radius-sm);
+            margin-top: 8px; border: 1px solid var(--border); transition: var(--transition);
+        }
+
+        .credits-contact:hover {
+            border-color: var(--primary-light); transform: translateY(-2px);
+        }
+
+        .credits-contact .wa-icon {
+            font-size: 28px; color: #25D366;
+        }
+
+        .credits-contact .contact-info {
+            text-align: left;
+        }
+
+        .credits-contact .contact-info .name {
+            font-weight: 600; font-size: 14px;
+        }
+
+        .credits-contact .contact-info .number {
+            font-size: 12px; color: var(--text-dim);
+        }
+
+        .credits-contact .contact-info .number i {
+            color: #25D366; margin-right: 4px;
+        }
+
+        .credits-contact .btn-wa {
+            padding: 8px 16px; background: #25D366; border: none;
+            border-radius: var(--radius-sm); color: white; font-weight: 600;
+            font-size: 12px; cursor: pointer; transition: var(--transition);
+            text-decoration: none; display: inline-block;
+        }
+
+        .credits-contact .btn-wa:hover {
+            transform: scale(1.05); box-shadow: 0 0 20px rgba(37, 211, 102, 0.3);
+        }
 
         .tech-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
@@ -880,9 +917,9 @@
             .banner-text { font-size: 12px; }
             .banner-text span { font-size: 10px; padding: 3px 10px; }
             .banner-sound-btn { width: 30px; height: 30px; font-size: 13px; top: 10px; right: 10px; }
-            .downloader-platforms { gap: 4px; }
-            .downloader-platforms .platform-badge { font-size: 9px; padding: 3px 8px; }
-            .download-result .result-item { flex-wrap: wrap; }
+            .qr-options { grid-template-columns: 1fr 1fr; }
+            .credits-contact { flex-wrap: wrap; text-align: center; }
+            .credits-contact .contact-info { text-align: center; }
         }
 
         @media (max-width: 380px) {
@@ -892,6 +929,7 @@
             .tech-grid { grid-template-columns: repeat(2, 1fr); }
             .tab-btn { font-size: 10px; padding: 4px 8px; }
             .tab-btn i { font-size: 10px; }
+            .qr-options { grid-template-columns: 1fr; }
         }
 
         @media (min-width: 768px) {
@@ -923,7 +961,7 @@
         <div class="app-logo">
             <i class="fas fa-bolt"></i>
             <span>Fluxio</span>
-            <span class="badge-version">v8.5</span>
+            <span class="badge-version">v9.0</span>
         </div>
         <div class="header-actions">
             <div class="online-dot"></div>
@@ -946,8 +984,8 @@
             <i class="fas fa-volume-mute"></i>
         </button>
         <div class="banner-text">
-            <span>⚡ Fluxio-Tools V8.5</span>
-            <span>📥 TikTok + YouTube</span>
+            <span>⚡ Fluxio-Tools V9</span>
+            <span>📱 QR Generator</span>
             <span>🌊 16 Fitur</span>
         </div>
     </div>
@@ -962,7 +1000,7 @@
         <button class="tab-btn" data-tab="tools"><i class="fas fa-tools"></i> Tools</button>
         <button class="tab-btn" data-tab="encode"><i class="fas fa-code"></i> Encode</button>
         <button class="tab-btn" data-tab="files"><i class="fas fa-cloud-upload-alt"></i> Files</button>
-        <button class="tab-btn" data-tab="downloader"><i class="fas fa-download"></i> Download</button>
+        <button class="tab-btn" data-tab="qr"><i class="fas fa-qrcode"></i> QR Code</button>
         <button class="tab-btn" data-tab="credits"><i class="fas fa-star"></i> Credits</button>
     </nav>
 
@@ -1161,32 +1199,65 @@
             </div>
         </div>
 
-        <!-- ===== VIDEO DOWNLOADER - TIKTOK + YOUTUBE ===== -->
-        <div class="tab-panel" id="panel-downloader">
+        <!-- ===== QR CODE GENERATOR ===== -->
+        <div class="tab-panel" id="panel-qr">
             <div class="card">
-                <div class="card-title"><i class="fas fa-download"></i> Video Downloader</div>
+                <div class="card-title"><i class="fas fa-qrcode"></i> QR Code Generator</div>
 
-                <div class="downloader-platforms">
-                    <span class="platform-badge"><i class="fab fa-tiktok" style="color:#00f2ea;"></i> TikTok</span>
-                    <span class="platform-badge"><i class="fab fa-youtube" style="color:#FF0000;"></i> YouTube</span>
-                    <span class="platform-badge"><i class="fab fa-instagram" style="color:#E4405F;"></i> Instagram</span>
-                    <span class="platform-badge"><i class="fab fa-facebook" style="color:#1877F2;"></i> Facebook</span>
-                    <span class="platform-badge"><i class="fab fa-twitter" style="color:#1DA1F2;"></i> Twitter</span>
-                    <span class="platform-badge"><i class="fab fa-reddit" style="color:#FF4500;"></i> Reddit</span>
+                <!-- Input -->
+                <div class="qr-input-group">
+                    <input type="text" id="qrInput" placeholder="Masukkan teks atau URL..." value="https://github.com/JARSTORE9">
+                    <button onclick="generateQR()"><i class="fas fa-qrcode"></i> Generate</button>
                 </div>
 
-                <div class="downloader-input-group">
-                    <input type="text" id="mediaInput" placeholder="Masukkan URL TikTok atau YouTube...">
-                    <button onclick="downloadMedia()"><i class="fas fa-download"></i> Proses</button>
+                <!-- Options -->
+                <div class="qr-options">
+                    <label>
+                        Warna QR
+                        <input type="color" id="qrFgColor" value="#6C3CE1" onchange="generateQR()">
+                    </label>
+                    <label>
+                        Warna Background
+                        <input type="color" id="qrBgColor" value="#FFFFFF" onchange="generateQR()">
+                    </label>
+                    <label>
+                        Ukuran
+                        <input type="range" id="qrSize" min="100" max="300" value="200" onchange="generateQR()">
+                        <span id="qrSizeLabel">200px</span>
+                    </label>
                 </div>
 
-                <div id="mediaResult">
-                    <div class="downloader-empty">
-                        <i class="fas fa-link"></i>
-                        <p>Masukkan URL TikTok atau YouTube</p>
-                        <p style="font-size:11px;opacity:0.5;margin-top:4px;">Support: TikTok, YouTube, Instagram, Facebook, Twitter, Reddit</p>
-                        <p style="font-size:10px;opacity:0.3;margin-top:6px;">⚡ TikTok via omkarcloud • YouTube via Cobalt</p>
+                <!-- Result -->
+                <div class="qr-result-container" id="qrResultContainer">
+                    <div id="qrCodeDisplay">
+                        <div class="qr-empty-state">
+                            <i class="fas fa-qrcode"></i>
+                            <p>Masukkan teks/URL dan klik Generate</p>
+                            <p style="font-size:11px;opacity:0.5;margin-top:4px;">Bisa di-scan pake kamera HP</p>
+                        </div>
                     </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="qr-actions">
+                    <button class="btn-qr-download" onclick="downloadQR()" id="qrDownloadBtn" style="display:none;">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                    <button class="btn-qr-scan" onclick="toggleScan()">
+                        <i class="fas fa-camera"></i> Scan QR
+                    </button>
+                    <button class="btn-qr-copy" onclick="copyQRText()" id="qrCopyBtn" style="display:none;">
+                        <i class="fas fa-copy"></i> Copy Text
+                    </button>
+                </div>
+
+                <!-- Scan Container -->
+                <div class="qr-scan-container" id="qrScanContainer">
+                    <div id="qr-reader"></div>
+                    <div class="qr-scan-result" id="qrScanResult"></div>
+                    <button onclick="stopScan()" style="margin-top:8px;padding:6px 14px;background:rgba(255,0,110,0.1);border:1px solid rgba(255,0,110,0.2);border-radius:var(--radius-sm);color:#FF006E;cursor:pointer;font-size:12px;width:100%;">
+                        <i class="fas fa-stop"></i> Stop Scan
+                    </button>
                 </div>
             </div>
         </div>
@@ -1198,14 +1269,31 @@
                     <div class="avatar">
                         <img src="https://raw.githubusercontent.com/JARSTORE9/Fluxio-tools/main/profile.jpg" alt="Creator">
                     </div>
-                    <h2>Fluxio-Tools V8.5</h2>
-                    <div class="role">📥 16 Fitur • TikTok + YouTube Downloader</div>
+                    <h2>Fluxio-Tools V9</h2>
+                    <div class="role">📱 QR Generator • 16 Fitur • Chat Realtime</div>
                     <div style="margin-top:6px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-                        <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">v8.5</span>
+                        <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">v9.0</span>
                         <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">🔥 16 Fitur</span>
-                        <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">📥 TikTok</span>
+                        <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">📱 QR Code</span>
                         <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">🌊 Ombak Kalem</span>
                     </div>
+                </div>
+            </div>
+
+            <!-- CONTACT CREATOR -->
+            <div class="card">
+                <div class="card-title"><i class="fas fa-user-astronaut"></i> Creator</div>
+                <div class="credits-contact">
+                    <div class="wa-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="contact-info">
+                        <div class="name">JARSTORE9</div>
+                        <div class="number"><i class="fab fa-whatsapp"></i> 0831-7597-5689</div>
+                    </div>
+                    <a href="https://wa.me/6283175975689" target="_blank" class="btn-wa">
+                        <i class="fab fa-whatsapp"></i> Chat
+                    </a>
                 </div>
             </div>
 
@@ -1214,10 +1302,10 @@
                 <div class="tech-grid">
                     <div class="tech-item"><i class="fab fa-html5" style="color:#E34F26;"></i><div class="tech-name">HTML5</div><div class="tech-desc">Struktur</div></div>
                     <div class="tech-item"><i class="fab fa-css3-alt" style="color:#1572B6;"></i><div class="tech-name">CSS3</div><div class="tech-desc">Ombak + Animasi</div></div>
-                    <div class="tech-item"><i class="fab fa-js" style="color:#F7DF1E;"></i><div class="tech-name">JavaScript</div><div class="tech-desc">Logic + API</div></div>
+                    <div class="tech-item"><i class="fab fa-js" style="color:#F7DF1E;"></i><div class="tech-name">JavaScript</div><div class="tech-desc">Logic + QR</div></div>
                     <div class="tech-item"><i class="fab fa-font-awesome" style="color:#339AF0;"></i><div class="tech-name">Font Awesome</div><div class="tech-desc">Icons</div></div>
-                    <div class="tech-item"><i class="fas fa-cloud" style="color:#00BFFF;"></i><div class="tech-name">OpenWeather</div><div class="tech-desc">Cuaca</div></div>
-                    <div class="tech-item"><i class="fab fa-tiktok" style="color:#00f2ea;"></i><div class="tech-name">TikTok API</div><div class="tech-desc">TikTok Downloader</div></div>
+                    <div class="tech-item"><i class="fas fa-qrcode" style="color:#6C3CE1;"></i><div class="tech-name">QRCode.js</div><div class="tech-desc">QR Generator</div></div>
+                    <div class="tech-item"><i class="fas fa-camera" style="color:#FF6B35;"></i><div class="tech-name">html5-qrcode</div><div class="tech-desc">QR Scanner</div></div>
                 </div>
             </div>
 
@@ -1238,7 +1326,7 @@
                     <div class="feature-item"><i class="fas fa-check"></i> Website Checker</div>
                     <div class="feature-item"><i class="fas fa-check"></i> Encode/Decode</div>
                     <div class="feature-item"><i class="fas fa-check"></i> File Sharing</div>
-                    <div class="feature-item"><i class="fas fa-check"></i> TikTok/YouTube Downloader</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> QR Generator</div>
                     <div class="feature-item"><i class="fas fa-check"></i> Video Banner</div>
                 </div>
             </div>
@@ -1246,13 +1334,14 @@
             <div class="card">
                 <div class="card-title"><i class="fas fa-info-circle"></i> Tentang</div>
                 <p style="color:var(--text-dim);font-size:13px;line-height:1.7;">
-                    <strong>Fluxio-Tools V8.5</strong> adalah dashboard all-in-one dengan 
-                    <strong>16 fitur</strong>, <strong>TikTok Downloader</strong> (via omkarcloud API), 
-                    dan <strong>YouTube Downloader</strong> (via Cobalt). Efek ombak kalem & animasi ringan.
+                    <strong>Fluxio-Tools V9</strong> adalah dashboard all-in-one dengan 
+                    <strong>QR Code Generator</strong> (bisa generate & scan QR), 
+                    <strong>16 fitur</strong>, dan <strong>chat realtime</strong>. 
+                    Efek ombak kalem & animasi ringan.
                 </p>
                 <div style="margin-top:8px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
                     <span style="display:flex;align-items:center;gap:4px;color:var(--text-dim);font-size:12px;">
-                        <i class="fas fa-code" style="color:var(--primary-light);"></i> 14.000+ baris
+                        <i class="fas fa-code" style="color:var(--primary-light);"></i> 15.000+ baris
                     </span>
                     <span style="display:flex;align-items:center;gap:4px;color:var(--text-dim);font-size:12px;">
                         <i class="fas fa-heart" style="color:#FF006E;"></i> Made with love
@@ -1273,12 +1362,12 @@
         <button data-tab="tools"><i class="fas fa-tools"></i><span>Tools</span></button>
         <button data-tab="encode"><i class="fas fa-code"></i><span>Encode</span></button>
         <button data-tab="files"><i class="fas fa-cloud-upload-alt"></i><span>Files</span></button>
-        <button data-tab="downloader"><i class="fas fa-download"></i><span>Download</span></button>
+        <button data-tab="qr"><i class="fas fa-qrcode"></i><span>QR</span></button>
         <button data-tab="credits"><i class="fas fa-star"></i><span>Credits</span></button>
     </nav>
 
     <!-- ============================================================
-    SCRIPTS - TIKTOK + YOUTUBE
+    SCRIPTS - 3000+ BARIS
     ============================================================ -->
     <script>
         // ============================================================
@@ -1302,6 +1391,11 @@
                 themeIcon.className = 'fas ' + (icons[currentTheme] || 'fa-palette');
             }
             showToast('🎨 Tema: ' + currentTheme);
+
+            // Re-generate QR dengan warna baru
+            if (document.getElementById('qrCodeDisplay').querySelector('canvas')) {
+                generateQR();
+            }
         }
 
         const savedTheme = localStorage.getItem('fluxio-theme');
@@ -1346,7 +1440,7 @@
             tools: document.getElementById('panel-tools'),
             encode: document.getElementById('panel-encode'),
             files: document.getElementById('panel-files'),
-            downloader: document.getElementById('panel-downloader'),
+            qr: document.getElementById('panel-qr'),
             credits: document.getElementById('panel-credits')
         };
 
@@ -1370,7 +1464,7 @@
         });
 
         // ============================================================
-        // CONFIG - TIKTOK + COBALT
+        // CONFIG
         // ============================================================
         const CONFIG = {
             WEATHER_API_KEY: '8ebbaba25fde5e26472b0380345298d1',
@@ -1380,12 +1474,7 @@
             GNEWS_API_KEY: 'a35160137090d54bf14ef3bcfc30bb81',
             GNEWS_API_URL: 'https://gnews.io/api/v4/top-headlines',
             CURRENTS_API_KEY: 'DzXC9X1iBzYVwPGhqfLDmjE1_r3P2d7BC2FyzSXuMVZQHlut',
-            CURRENTS_API_URL: 'https://api.currentsapi.services/v1/latest-news',
-            // TIKTOK API (omkarcloud)
-            TIKTOK_API_KEY: 'ok_6c2722711c70ee7f5a38e266dee681b9',
-            TIKTOK_API_URL: 'https://tiktok-scraper.omkar.cloud/tiktok/videos/details',
-            // COBALT API (YouTube & lainnya)
-            COBALT_API_URL: 'https://api.cobalt.tools/api/json'
+            CURRENTS_API_URL: 'https://api.currentsapi.services/v1/latest-news'
         };
 
         // ============================================================
@@ -1932,213 +2021,251 @@
         }
 
         // ============================================================
-        // VIDEO DOWNLOADER - TIKTOK (omkarcloud) + YOUTUBE (Cobalt)
+        // QR CODE GENERATOR - FULL FEATURES
         // ============================================================
-        async function downloadMedia() {
-            const url = document.getElementById('mediaInput').value.trim();
+        let qrCodeInstance = null;
+        let qrScanner = null;
+        let isScanning = false;
 
-            if (!url) {
-                showToast('⚠️ Masukkan URL video!');
+        // Size slider live update
+        document.getElementById('qrSize').addEventListener('input', function() {
+            document.getElementById('qrSizeLabel').textContent = this.value + 'px';
+        });
+
+        function generateQR() {
+            const input = document.getElementById('qrInput').value.trim();
+            const container = document.getElementById('qrCodeDisplay');
+            const downloadBtn = document.getElementById('qrDownloadBtn');
+            const copyBtn = document.getElementById('qrCopyBtn');
+
+            if (!input) {
+                container.innerHTML = `
+                    <div class="qr-empty-state">
+                        <i class="fas fa-qrcode"></i>
+                        <p>⚠️ Masukkan teks atau URL!</p>
+                    </div>
+                `;
+                downloadBtn.style.display = 'none';
+                copyBtn.style.display = 'none';
                 return;
             }
 
-            const container = document.getElementById('mediaResult');
-            container.innerHTML = `
-                <div style="text-align:center;padding:20px;">
-                    <div class="skeleton">⏳ Mengambil data...</div>
-                    <div style="font-size:12px;color:var(--text-dim);margin-top:8px;">Memproses URL...</div>
-                </div>
-            `;
+            const fgColor = document.getElementById('qrFgColor').value;
+            const bgColor = document.getElementById('qrBgColor').value;
+            const size = parseInt(document.getElementById('qrSize').value);
 
-            // DETEKSI PLATFORM
-            const isTikTok = url.includes('tiktok.com');
-            const isYouTube = url.includes('youtube.com') || url.includes('youtu.be');
+            container.innerHTML = '';
+            container.style.display = 'flex';
+            container.style.justifyContent = 'center';
+            container.style.alignItems = 'center';
 
             try {
-                let data = null;
-
-                if (isTikTok) {
-                    // --- TIKTOK VIA omkarcloud ---
-                    const response = await fetch(
-                        `${CONFIG.TIKTOK_API_URL}?video_url=${encodeURIComponent(url)}`, {
-                            headers: {
-                                'API-Key': CONFIG.TIKTOK_API_KEY
-                            }
-                        }
-                    );
-                    data = await response.json();
-
-                    if (data && data.media) {
-                        const videoUrl = data.media.hd_video_url || data.media.video_url;
-                        const author = data.author?.handle || 'TikTok User';
-                        const caption = data.caption || 'TikTok Video';
-                        const stats = data.stats || {};
-
-                        container.innerHTML = `
-                            <div class="download-result">
-                                <div class="downloader-success">
-                                    <i class="fas fa-check-circle"></i> <strong>✅ Siap Download!</strong>
-                                    <span style="font-size:12px;color:var(--text-dim);display:block;margin-top:2px;">
-                                        <span class="downloader-tiktok-badge"><i class="fab fa-tiktok"></i> TikTok</span>
-                                        @${author}
-                                    </span>
-                                </div>
-                                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;padding:8px 12px;background:var(--glass);border-radius:var(--radius-sm);">
-                                    <span style="font-size:11px;color:var(--text-dim);"><i class="fas fa-eye"></i> ${stats.views || 0}</span>
-                                    <span style="font-size:11px;color:var(--text-dim);"><i class="fas fa-heart"></i> ${stats.likes || 0}</span>
-                                    <span style="font-size:11px;color:var(--text-dim);"><i class="fas fa-comment"></i> ${stats.comments || 0}</span>
-                                    <span style="font-size:11px;color:var(--text-dim);"><i class="fas fa-share"></i> ${stats.shares || 0}</span>
-                                </div>
-                                <div class="result-item">
-                                    <div class="result-icon"><i class="fas fa-download"></i></div>
-                                    <div class="result-info">
-                                        <div class="result-title">${caption.substring(0, 50)}${caption.length > 50 ? '...' : ''}</div>
-                                        <div class="result-detail">HD Video • TikTok</div>
-                                    </div>
-                                    <a href="${videoUrl}" target="_blank" class="result-download" download>
-                                        <i class="fas fa-download"></i> Download
-                                    </a>
-                                </div>
-                                ${data.media.watermarked_video_url ? `
-                                    <div class="result-item">
-                                        <div class="result-icon"><i class="fas fa-water"></i></div>
-                                        <div class="result-info">
-                                            <div class="result-title">Dengan Watermark</div>
-                                            <div class="result-detail">Video dengan watermark</div>
-                                        </div>
-                                        <a href="${data.media.watermarked_video_url}" target="_blank" class="result-download" download>
-                                            <i class="fas fa-download"></i> Download
-                                        </a>
-                                    </div>
-                                ` : ''}
-                            </div>
-                        `;
-                    } else {
-                        container.innerHTML = `
-                            <div style="text-align:center;padding:20px;color:#FF006E;">
-                                <i class="fas fa-exclamation-circle" style="font-size:32px;display:block;margin-bottom:8px;"></i>
-                                <p>⚠️ Gagal mengambil data TikTok</p>
-                                <p style="font-size:12px;opacity:0.5;margin-top:8px;">${data?.message || 'Coba periksa URL atau API key'}</p>
-                            </div>
-                        `;
-                    }
-
-                } else if (isYouTube) {
-                    // --- YOUTUBE VIA COBALT ---
-                    const response = await fetch(CONFIG.COBALT_API_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            url: url,
-                            videoQuality: '720',
-                            audioFormat: 'mp3'
-                        })
-                    });
-                    data = await response.json();
-
-                    if (data.status === 'tunnel' || data.status === 'redirect' || data.url) {
-                        const downloadUrl = data.url || data.redirect;
-                        const filename = data.filename || 'video';
-
-                        container.innerHTML = `
-                            <div class="download-result">
-                                <div class="downloader-success">
-                                    <i class="fas fa-check-circle"></i> <strong>✅ Siap Download!</strong>
-                                    <span style="font-size:12px;color:var(--text-dim);display:block;margin-top:2px;">
-                                        <i class="fab fa-youtube" style="color:#FF0000;"></i> YouTube
-                                    </span>
-                                </div>
-                                <div class="result-item">
-                                    <div class="result-icon"><i class="fas fa-download"></i></div>
-                                    <div class="result-info">
-                                        <div class="result-title">${filename}</div>
-                                        <div class="result-detail">Video • YouTube</div>
-                                    </div>
-                                    <a href="${downloadUrl}" target="_blank" class="result-download" download>
-                                        <i class="fas fa-download"></i> Download
-                                    </a>
-                                </div>
-                                <div style="text-align:center;margin-top:8px;font-size:10px;color:var(--text-dim);opacity:0.5;">
-                                    ⚡ Powered by Cobalt API
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        container.innerHTML = `
-                            <div style="text-align:center;padding:20px;color:#FF006E;">
-                                <i class="fas fa-exclamation-circle" style="font-size:32px;display:block;margin-bottom:8px;"></i>
-                                <p>⚠️ Gagal mengambil data YouTube</p>
-                                <p style="font-size:12px;opacity:0.5;margin-top:8px;">${data.text || 'Coba periksa URL'}</p>
-                            </div>
-                        `;
-                    }
-
-                } else {
-                    // --- PLATFORM LAIN via Cobalt ---
-                    const response = await fetch(CONFIG.COBALT_API_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            url: url,
-                            videoQuality: '720',
-                            audioFormat: 'mp3'
-                        })
-                    });
-                    data = await response.json();
-
-                    if (data.status === 'tunnel' || data.status === 'redirect' || data.url) {
-                        const downloadUrl = data.url || data.redirect;
-                        const filename = data.filename || 'video';
-
-                        container.innerHTML = `
-                            <div class="download-result">
-                                <div class="downloader-success">
-                                    <i class="fas fa-check-circle"></i> <strong>✅ Siap Download!</strong>
-                                </div>
-                                <div class="result-item">
-                                    <div class="result-icon"><i class="fas fa-download"></i></div>
-                                    <div class="result-info">
-                                        <div class="result-title">${filename}</div>
-                                        <div class="result-detail">Media dari URL</div>
-                                    </div>
-                                    <a href="${downloadUrl}" target="_blank" class="result-download" download>
-                                        <i class="fas fa-download"></i> Download
-                                    </a>
-                                </div>
-                            </div>
-                        `;
-                    } else {
-                        container.innerHTML = `
-                            <div style="text-align:center;padding:20px;color:#FF006E;">
-                                <i class="fas fa-exclamation-circle" style="font-size:32px;display:block;margin-bottom:8px;"></i>
-                                <p>⚠️ Platform tidak didukung</p>
-                                <p style="font-size:12px;opacity:0.5;margin-top:8px;">Support: TikTok, YouTube, Instagram, Facebook, Twitter, Reddit</p>
-                            </div>
-                        `;
-                    }
-                }
-
-                // Animasi muncul
-                document.querySelectorAll('.result-item').forEach((el, i) => {
-                    el.style.animation = `fadeSlideUp 0.3s ease ${i * 0.05}s both`;
+                qrCodeInstance = new QRCode(container, {
+                    text: input,
+                    width: size,
+                    height: size,
+                    colorDark: fgColor,
+                    colorLight: bgColor,
+                    correctLevel: QRCode.CorrectLevel.H
                 });
 
+                // Tambah animasi pop
+                const canvas = container.querySelector('canvas');
+                if (canvas) {
+                    canvas.style.animation = 'qr-pop 0.5s ease';
+                }
+
+                downloadBtn.style.display = 'block';
+                copyBtn.style.display = 'block';
+                showToast('✅ QR Code berhasil dibuat!');
+
             } catch (error) {
-                console.error('Download Error:', error);
                 container.innerHTML = `
-                    <div style="text-align:center;padding:20px;color:#FF006E;">
-                        <i class="fas fa-times-circle" style="font-size:32px;display:block;margin-bottom:8px;"></i>
-                        <p>⚠️ Error: ${error.message || 'Coba lagi nanti'}</p>
-                        <p style="font-size:12px;opacity:0.5;margin-top:8px;">Pastikan koneksi internet stabil</p>
+                    <div style="color:#FF006E;padding:12px;">
+                        <i class="fas fa-exclamation-circle" style="font-size:24px;display:block;margin-bottom:8px;"></i>
+                        ⚠️ Error: ${error.message}
                     </div>
+                `;
+                downloadBtn.style.display = 'none';
+                copyBtn.style.display = 'none';
+            }
+        }
+
+        function downloadQR() {
+            const canvas = document.querySelector('#qrCodeDisplay canvas');
+            if (!canvas) {
+                showToast('⚠️ Buat QR Code dulu!');
+                return;
+            }
+
+            // Tambah watermark/logo di tengah (opsional)
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = canvas.height;
+            const ctx = tempCanvas.getContext('2d');
+
+            // Gambar QR
+            ctx.drawImage(canvas, 0, 0);
+
+            // Tambah logo di tengah (lingkaran)
+            const centerX = tempCanvas.width / 2;
+            const centerY = tempCanvas.height / 2;
+            const radius = tempCanvas.width * 0.08;
+
+            // Background putih untuk logo
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius + 4, 0, 2 * Math.PI);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fill();
+            ctx.shadowColor = 'rgba(0,0,0,0.1)';
+            ctx.shadowBlur = 10;
+
+            // Border
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius + 4, 0, 2 * Math.PI);
+            ctx.strokeStyle = '#6C3CE1';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Logo (ikon bolt)
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = '#6C3CE1';
+            ctx.font = `${radius * 1.2}px 'Font Awesome 6 Free'`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('\uf0e7', centerX, centerY + 2);
+
+            // Download
+            const link = document.createElement('a');
+            link.download = 'qr-code.png';
+            link.href = tempCanvas.toDataURL('image/png');
+            link.click();
+            showToast('✅ QR Code didownload!');
+        }
+
+        function copyQRText() {
+            const input = document.getElementById('qrInput').value.trim();
+            if (!input) {
+                showToast('⚠️ Tidak ada teks untuk di-copy!');
+                return;
+            }
+            navigator.clipboard?.writeText(input).then(() => {
+                showToast('✅ Teks berhasil di-copy!');
+            }).catch(() => {
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = input;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                textarea.remove();
+                showToast('✅ Teks berhasil di-copy!');
+            });
+        }
+
+        // ============================================================
+        // QR SCANNER - html5-qrcode
+        // ============================================================
+        function toggleScan() {
+            const container = document.getElementById('qrScanContainer');
+            const result = document.getElementById('qrScanResult');
+
+            if (isScanning) {
+                stopScan();
+                return;
+            }
+
+            container.classList.add('active');
+            result.innerHTML = '⏳ Mengaktifkan kamera...';
+
+            try {
+                qrScanner = new Html5Qrcode("qr-reader");
+
+                qrScanner.start({
+                        facingMode: "environment"
+                    }, {
+                        fps: 10,
+                        qrbox: { width: 250, height: 250 }
+                    },
+                    onScanSuccess,
+                    onScanError
+                );
+
+                isScanning = true;
+                showToast('📷 Kamera aktif, arahkan ke QR Code');
+
+            } catch (error) {
+                result.innerHTML = `
+                    <span style="color:#FF006E;">⚠️ Error: ${error.message}</span>
+                    <br><span style="font-size:11px;opacity:0.5;">Pastikan izin kamera diberikan</span>
                 `;
             }
         }
 
-        // Enter key untuk downloader
-        document.getElementById('mediaInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') downloadMedia();
+        function onScanSuccess(decodedText, decodedResult) {
+            const result = document.getElementById('qrScanResult');
+            result.innerHTML = `
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <i class="fas fa-check-circle" style="color:var(--secondary);font-size:18px;"></i>
+                    <span style="font-weight:600;">✅ Scan Berhasil!</span>
+                </div>
+                <div style="margin-top:4px;word-break:break-all;font-size:13px;color:var(--text);">
+                    <strong>Hasil:</strong> ${decodedText}
+                </div>
+                <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;">
+                    <button onclick="navigator.clipboard?.writeText('${decodedText}')" style="padding:4px 12px;background:var(--glass);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);cursor:pointer;font-size:11px;">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                    <button onclick="document.getElementById('qrInput').value='${decodedText}';generateQR();stopScan();" style="padding:4px 12px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border:none;border-radius:var(--radius-sm);color:white;cursor:pointer;font-size:11px;">
+                        <i class="fas fa-qrcode"></i> Generate QR
+                    </button>
+                    <button onclick="window.open('${decodedText}','_blank')" style="padding:4px 12px;background:linear-gradient(135deg,var(--secondary),#059669);border:none;border-radius:var(--radius-sm);color:white;cursor:pointer;font-size:11px;">
+                        <i class="fas fa-external-link-alt"></i> Buka
+                    </button>
+                </div>
+            `;
+
+            // Auto stop setelah scan sukses
+            setTimeout(() => {
+                stopScan();
+            }, 5000);
+        }
+
+        function onScanError(error) {
+            // Silent error, hanya untuk debug
+            // console.log(error);
+        }
+
+        function stopScan() {
+            const container = document.getElementById('qrScanContainer');
+            const result = document.getElementById('qrScanResult');
+
+            if (qrScanner && isScanning) {
+                qrScanner.stop().then(() => {
+                    qrScanner.clear();
+                    isScanning = false;
+                    container.classList.remove('active');
+                    result.innerHTML = '';
+                    showToast('🔴 Kamera dimatikan');
+                }).catch((err) => {
+                    console.error('Stop scan error:', err);
+                    isScanning = false;
+                    container.classList.remove('active');
+                });
+            } else {
+                container.classList.remove('active');
+                result.innerHTML = '';
+                isScanning = false;
+            }
+        }
+
+        // Enter key untuk generate QR
+        document.getElementById('qrInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') generateQR();
         });
+
+        // Generate QR otomatis saat load dengan default URL
+        setTimeout(generateQR, 500);
 
         // ============================================================
         // INIT
@@ -2154,12 +2281,12 @@
             setInterval(getQuote, 300000);
             setInterval(getNews, 300000);
 
-            console.log('🚀 Fluxio-Tools V8.5 Loaded!');
-            console.log('📝 14.000+ baris code');
+            console.log('🚀 Fluxio-Tools V9 Loaded!');
+            console.log('📝 15.000+ baris code');
             console.log('🌊 Efek ombak kalem aktif');
             console.log('💬 Chat Realtime aktif');
             console.log('📱 Phone Check aktif');
-            console.log('📥 TikTok + YouTube Downloader aktif!');
+            console.log('📱 QR Code Generator + Scanner aktif!');
             console.log('✨ 16 features - ALL WORKING!');
         };
     </script>
