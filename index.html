@@ -1206,7 +1206,7 @@
 
                 <!-- Input -->
                 <div class="qr-input-group">
-                    <input type="text" id="qrInput" placeholder="Masukkan teks atau URL..." value="https://github.com/JARSTORE9">
+                    <input type="text" id="qrInput" placeholder="Masukkan teks atau URL..." value="   ">
                     <button onclick="generateQR()"><i class="fas fa-qrcode"></i> Generate</button>
                 </div>
 
@@ -1288,7 +1288,7 @@
                         <i class="fab fa-whatsapp"></i>
                     </div>
                     <div class="contact-info">
-                        <div class="name">JARSTORE9</div>
+                        <div class="name">JARZ</div>
                         <div class="number"><i class="fab fa-whatsapp"></i> 0831-7597-5689</div>
                     </div>
                     <a href="https://wa.me/6283175975689" target="_blank" class="btn-wa">
@@ -2092,56 +2092,19 @@
         }
 
         function downloadQR() {
-            const canvas = document.querySelector('#qrCodeDisplay canvas');
-            if (!canvas) {
-                showToast('⚠️ Buat QR Code dulu!');
-                return;
-            }
+    const canvas = document.querySelector('#qrCodeDisplay canvas');
+    if (!canvas) {
+        showToast('⚠️ Buat QR Code dulu!');
+        return;
+    }
 
-            // Tambah watermark/logo di tengah (opsional)
-            const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = canvas.width;
-            tempCanvas.height = canvas.height;
-            const ctx = tempCanvas.getContext('2d');
-
-            // Gambar QR
-            ctx.drawImage(canvas, 0, 0);
-
-            // Tambah logo di tengah (lingkaran)
-            const centerX = tempCanvas.width / 2;
-            const centerY = tempCanvas.height / 2;
-            const radius = tempCanvas.width * 0.08;
-
-            // Background putih untuk logo
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, radius + 4, 0, 2 * Math.PI);
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fill();
-            ctx.shadowColor = 'rgba(0,0,0,0.1)';
-            ctx.shadowBlur = 10;
-
-            // Border
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, radius + 4, 0, 2 * Math.PI);
-            ctx.strokeStyle = '#6C3CE1';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            // Logo (ikon bolt)
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = '#6C3CE1';
-            ctx.font = `${radius * 1.2}px 'Font Awesome 6 Free'`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('\uf0e7', centerX, centerY + 2);
-
-            // Download
-            const link = document.createElement('a');
-            link.download = 'qr-code.png';
-            link.href = tempCanvas.toDataURL('image/png');
-            link.click();
-            showToast('✅ QR Code didownload!');
-        }
+    // ✅ LANGSUNG DOWNLOAD QR MURNI - TANPA LOGO
+    const link = document.createElement('a');
+    link.download = 'qr-code.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast('✅ QR Code didownload!');
+}
 
         function copyQRText() {
             const input = document.getElementById('qrInput').value.trim();
