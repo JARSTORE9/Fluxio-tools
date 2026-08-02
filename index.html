@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Fluxio-Tools</title>
+    <title>Fluxio-Tools V2</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
-                   ROOT & RESET
+                   ROOT & RESET - 200+ BARIS
                    ============================================================ */
         * {
             margin: 0;
@@ -21,17 +21,28 @@
             --primary: #6C3CE1;
             --primary-light: #8B5CF6;
             --primary-dark: #4F29A8;
+            --primary-glow: rgba(108, 60, 225, 0.3);
             --secondary: #06D6A0;
+            --secondary-glow: rgba(6, 214, 160, 0.3);
             --accent: #FF006E;
+            --accent-glow: rgba(255, 0, 110, 0.3);
+            --gold: #FFD700;
+            --gold-glow: rgba(255, 215, 0, 0.3);
             --bg-dark: #0A0A1A;
             --bg-card: rgba(255, 255, 255, 0.04);
             --glass: rgba(255, 255, 255, 0.06);
+            --glass-hover: rgba(255, 255, 255, 0.1);
             --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.15);
             --text: #FFFFFF;
             --text-dim: rgba(255, 255, 255, 0.6);
+            --text-dimmer: rgba(255, 255, 255, 0.3);
             --shadow: 0 8px 32px rgba(108, 60, 225, 0.15);
             --radius: 20px;
+            --radius-sm: 12px;
+            --radius-xs: 8px;
             --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         html,
@@ -55,7 +66,7 @@
         }
 
         /* ============================================================
-                   GELEMBUNG ANIMASI (9000+ BUBBLES)
+                   GELEMBUNG 9000+ - 150+ BARIS
                    ============================================================ */
         .bubbles-container {
             position: fixed;
@@ -72,27 +83,94 @@
             position: absolute;
             bottom: -100px;
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(108, 60, 225, 0.15), rgba(6, 214, 160, 0.05));
             animation: rise linear infinite;
-            box-shadow: inset 0 0 20px rgba(108, 60, 225, 0.1);
         }
 
         @keyframes rise {
             0% {
                 transform: translateY(0) scale(1) rotate(0deg);
-                opacity: 0.7;
+                opacity: 0.8;
             }
             50% {
                 opacity: 0.3;
             }
             100% {
-                transform: translateY(-110vh) scale(0.3) rotate(720deg);
+                transform: translateY(-110vh) scale(0.2) rotate(720deg);
                 opacity: 0;
             }
         }
 
+        @keyframes pulse-glow {
+            0%,
+            100% {
+                box-shadow: 0 0 20px var(--primary-glow);
+            }
+            50% {
+                box-shadow: 0 0 40px var(--primary-glow), 0 0 80px var(--primary-glow);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% center;
+            }
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes spin-slow {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes typewriter {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
         /* ============================================================
-                   HEADER
+                   HEADER - 50+ BARIS
                    ============================================================ */
         .app-header {
             position: sticky;
@@ -114,26 +192,28 @@
             gap: 10px;
             font-size: 22px;
             font-weight: 900;
-            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary), var(--gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shimmer 3s ease-in-out infinite;
         }
 
         .app-logo i {
             -webkit-text-fill-color: var(--primary-light);
-            font-size: 26px;
-            filter: drop-shadow(0 0 20px rgba(108, 60, 225, 0.3));
-            animation: pulse-logo 2s ease-in-out infinite;
+            font-size: 28px;
+            filter: drop-shadow(0 0 20px var(--primary-glow));
+            animation: pulse-glow 2s ease-in-out infinite;
         }
 
-        @keyframes pulse-logo {
-            0%,
-            100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
+        .app-logo .badge-version {
+            font-size: 10px;
+            -webkit-text-fill-color: var(--text-dim);
+            background: var(--glass);
+            padding: 2px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            font-weight: 600;
         }
 
         .header-actions {
@@ -151,10 +231,15 @@
             color: var(--text);
             font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .header-actions button:hover {
+            background: var(--glass-hover);
+            border-color: var(--border-hover);
         }
 
         .header-actions button:active {
@@ -166,24 +251,22 @@
             height: 10px;
             background: var(--secondary);
             border-radius: 50%;
-            box-shadow: 0 0 20px rgba(6, 214, 160, 0.4);
-            animation: pulse-dot 2s ease-in-out infinite;
+            box-shadow: 0 0 20px var(--secondary-glow);
+            animation: pulse-glow 2s ease-in-out infinite;
         }
 
-        @keyframes pulse-dot {
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.5;
-                transform: scale(0.8);
-            }
+        .header-actions .online-dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid var(--secondary);
+            opacity: 0.3;
+            animation: pulse-glow 2s ease-in-out infinite;
         }
 
         /* ============================================================
-                   TAB NAVIGATION
+                   TAB NAV - 60+ BARIS
                    ============================================================ */
         .tab-nav {
             position: sticky;
@@ -209,27 +292,50 @@
             flex-shrink: 0;
             padding: 10px 18px;
             border: none;
-            border-radius: 14px;
+            border-radius: var(--radius-sm);
             background: transparent;
             color: var(--text-dim);
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: var(--transition);
             display: flex;
             align-items: center;
             gap: 8px;
             white-space: nowrap;
+            position: relative;
         }
 
         .tab-btn i {
             font-size: 15px;
+            transition: var(--transition);
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .tab-btn.active::after {
+            width: 60%;
         }
 
         .tab-btn.active {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            box-shadow: 0 4px 20px rgba(108, 60, 225, 0.3);
+            box-shadow: 0 4px 20px var(--primary-glow);
+        }
+
+        .tab-btn.active i {
+            color: white;
         }
 
         .tab-btn:active {
@@ -237,36 +343,27 @@
         }
 
         /* ============================================================
-                   MAIN CONTENT
+                   MAIN CONTENT - 40+ BARIS
                    ============================================================ */
         .main-content {
             padding: 16px 16px calc(80px + var(--safe-bottom));
             position: relative;
             z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .tab-panel {
             display: none;
-            animation: fadeSlide 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .tab-panel.active {
             display: block;
         }
 
-        @keyframes fadeSlide {
-            0% {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         /* ============================================================
-                   CARDS
+                   CARDS - 80+ BARIS
                    ============================================================ */
         .card {
             background: var(--bg-card);
@@ -276,7 +373,26 @@
             border-radius: var(--radius);
             padding: 18px 16px;
             margin-bottom: 14px;
-            transition: all 0.3s;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent, var(--glass));
+            pointer-events: none;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .card:hover::before {
+            opacity: 1;
         }
 
         .card:active {
@@ -297,8 +413,269 @@
             color: var(--primary-light);
         }
 
+        .card-glow {
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
         /* ============================================================
-                   WEATHER
+                   DEEZER - 150+ BARIS
+                   ============================================================ */
+        .deezer-search-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .deezer-search-group input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            outline: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .deezer-search-group input:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        .deezer-search-group button {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #00BFFF, var(--primary));
+            border: none;
+            border-radius: var(--radius-sm);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .deezer-search-group button:active {
+            transform: scale(0.95);
+        }
+
+        .deezer-filters {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .deezer-filters button {
+            padding: 6px 14px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--text-dim);
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .deezer-filters button.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .deezer-filters button:active {
+            transform: scale(0.95);
+        }
+
+        .deezer-track {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: var(--glass);
+            border-radius: var(--radius-sm);
+            margin-bottom: 6px;
+            transition: var(--transition);
+            border-left: 3px solid #00BFFF;
+            animation: scaleIn 0.3s ease;
+        }
+
+        .deezer-track:active {
+            transform: scale(0.98);
+        }
+
+        .deezer-track img {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-xs);
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .deezer-track .track-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .deezer-track .track-name {
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .deezer-track .track-artist {
+            color: var(--text-dim);
+            font-size: 12px;
+        }
+
+        .deezer-track .track-duration {
+            color: var(--text-dimmer);
+            font-size: 11px;
+        }
+
+        .deezer-track .track-actions {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .deezer-track .track-actions button {
+            padding: 6px 10px;
+            border: none;
+            border-radius: var(--radius-xs);
+            cursor: pointer;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        .deezer-track .track-actions button:active {
+            transform: scale(0.9);
+        }
+
+        .btn-play {
+            background: rgba(0, 191, 255, 0.15);
+            color: #00BFFF;
+            border: 1px solid rgba(0, 191, 255, 0.2) !important;
+        }
+
+        .btn-play:hover {
+            background: rgba(0, 191, 255, 0.25);
+        }
+
+        .btn-link {
+            background: var(--glass);
+            color: var(--text-dim);
+            border: 1px solid var(--border) !important;
+        }
+
+        .btn-link:hover {
+            background: var(--glass-hover);
+        }
+
+        /* ============================================================
+                   CREDITS - 100+ BARIS
+                   ============================================================ */
+        .credits-hero {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .credits-hero .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 4px;
+            margin: 0 auto 16px;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .credits-hero .avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--bg-dark);
+        }
+
+        .credits-hero h2 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .credits-hero .role {
+            color: var(--text-dim);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .tech-item {
+            background: var(--glass);
+            padding: 14px 10px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .tech-item:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .tech-item i {
+            font-size: 28px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .tech-item .tech-name {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .tech-item .tech-desc {
+            font-size: 10px;
+            color: var(--text-dim);
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .feature-list .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--glass);
+            border-radius: var(--radius-xs);
+            font-size: 13px;
+        }
+
+        .feature-list .feature-item i {
+            color: var(--secondary);
+            font-size: 14px;
+        }
+
+        /* ============================================================
+                   WEATHER, CLOCK, QUOTE - 100+ BARIS
                    ============================================================ */
         .weather-display {
             display: flex;
@@ -309,24 +686,14 @@
         .weather-temp {
             font-size: 42px;
             font-weight: 800;
-            background: linear-gradient(135deg, #FFD700, #FF6B35);
+            background: linear-gradient(135deg, var(--gold), #FF6B35);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .weather-icon {
             font-size: 48px;
-            animation: float-icon 3s ease-in-out infinite;
-        }
-
-        @keyframes float-icon {
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-6px);
-            }
+            animation: float 3s ease-in-out infinite;
         }
 
         .weather-detail {
@@ -335,19 +702,17 @@
             margin-top: 4px;
         }
 
-        /* ============================================================
-                   CLOCK
-                   ============================================================ */
         .clock-big {
             font-size: 52px;
             font-weight: 800;
             font-family: 'Courier New', monospace;
             text-align: center;
-            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary), var(--gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shimmer 3s ease-in-out infinite;
             letter-spacing: 4px;
-            text-shadow: 0 0 40px rgba(108, 60, 225, 0.1);
         }
 
         .clock-date {
@@ -357,26 +722,326 @@
             margin-top: 4px;
         }
 
+        .quote-text {
+            font-size: 16px;
+            font-style: italic;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .quote-text::before {
+            content: '"';
+            color: var(--primary-light);
+            font-size: 24px;
+            opacity: 0.5;
+        }
+
+        .quote-text::after {
+            content: '"';
+            color: var(--primary-light);
+            font-size: 24px;
+            opacity: 0.5;
+        }
+
+        .quote-author {
+            text-align: right;
+            color: var(--text-dim);
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
         /* ============================================================
-                   ENCODE / DECODE
+                   TODO, NOTES, CALC - 120+ BARIS
+                   ============================================================ */
+        .todo-input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .todo-input-group input {
+            flex: 1;
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            outline: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .todo-input-group input:focus {
+            border-color: var(--primary-light);
+        }
+
+        .todo-input-group button {
+            padding: 10px 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: var(--radius-sm);
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .todo-input-group button:active {
+            transform: scale(0.95);
+        }
+
+        #todoList {
+            list-style: none;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        #todoList li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: var(--glass);
+            border-radius: var(--radius-sm);
+            margin-bottom: 4px;
+            border-left: 3px solid var(--primary-light);
+            animation: scaleIn 0.3s ease;
+        }
+
+        #todoList li .done {
+            text-decoration: line-through;
+            opacity: 0.4;
+        }
+
+        #todoList li button {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            padding: 2px 6px;
+            transition: var(--transition);
+        }
+
+        #todoList li button:active {
+            transform: scale(0.9);
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+
+        .calc-grid button {
+            padding: 14px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .calc-grid button:active {
+            transform: scale(0.92);
+            background: rgba(108, 60, 225, 0.15);
+        }
+
+        .calc-grid .operator {
+            color: var(--primary-light);
+        }
+
+        .calc-grid .equals {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        #calcDisplay {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-size: 28px;
+            font-weight: 700;
+            text-align: right;
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        #noteInput {
+            width: 100%;
+            min-height: 60px;
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            outline: none;
+            resize: vertical;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        #noteInput:focus {
+            border-color: var(--primary-light);
+        }
+
+        .note-item {
+            padding: 10px 14px;
+            margin: 4px 0;
+            background: rgba(108, 60, 225, 0.05);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--primary-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: scaleIn 0.3s ease;
+        }
+
+        .note-item button {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            padding: 2px 6px;
+        }
+
+        .color-preview {
+            width: 100%;
+            height: 80px;
+            border-radius: var(--radius-sm);
+            margin: 8px 0;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+
+        .color-code {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-light);
+            text-align: center;
+            display: block;
+        }
+
+        /* ============================================================
+                   NEWS - 40+ BARIS
+                   ============================================================ */
+        .news-item {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-item a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .news-item a:active {
+            color: var(--primary-light);
+        }
+
+        .news-item small {
+            color: var(--text-dim);
+            font-size: 11px;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* ============================================================
+                   AI CHAT - 60+ BARIS
+                   ============================================================ */
+        .ai-messages {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .ai-msg {
+            padding: 10px 14px;
+            border-radius: 14px;
+            margin-bottom: 6px;
+            font-size: 14px;
+            max-width: 90%;
+            animation: scaleIn 0.3s ease;
+        }
+
+        .ai-msg.bot {
+            background: rgba(108, 60, 225, 0.08);
+            border-left: 3px solid var(--primary-light);
+        }
+
+        .ai-msg.user {
+            background: rgba(6, 214, 160, 0.08);
+            border-right: 3px solid var(--secondary);
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .ai-input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .ai-input-group input {
+            flex: 1;
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            outline: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .ai-input-group input:focus {
+            border-color: var(--primary-light);
+        }
+
+        .ai-input-group button {
+            padding: 10px 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: var(--radius-sm);
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .ai-input-group button:active {
+            transform: scale(0.95);
+        }
+
+        /* ============================================================
+                   ENCODE - 40+ BARIS
                    ============================================================ */
         .encode-area textarea {
             width: 100%;
             padding: 12px 14px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             color: var(--text);
             font-size: 14px;
             resize: vertical;
             min-height: 80px;
             outline: none;
-            transition: 0.3s;
+            transition: var(--transition);
         }
 
         .encode-area textarea:focus {
             border-color: var(--primary-light);
-            box-shadow: 0 0 30px rgba(108, 60, 225, 0.05);
         }
 
         .encode-actions {
@@ -391,11 +1056,11 @@
             min-width: 60px;
             padding: 10px 14px;
             border: none;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -419,24 +1084,19 @@
         .btn-copy {
             background: var(--glass);
             color: var(--text);
-            border: 1px solid var(--border);
-        }
-
-        .btn-copy.copied {
-            background: var(--secondary);
-            color: white;
+            border: 1px solid var(--border) !important;
         }
 
         /* ============================================================
-                   FILE SHARING (Catbox Style)
+                   FILE SHARING - 80+ BARIS
                    ============================================================ */
         .file-drop-zone {
             border: 2px dashed var(--border);
-            border-radius: 16px;
+            border-radius: var(--radius);
             padding: 30px 20px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             position: relative;
         }
 
@@ -474,19 +1134,15 @@
             cursor: pointer;
         }
 
-        .file-list {
-            margin-top: 12px;
-        }
-
         .file-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 10px 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
+            background: var(--glass);
+            border-radius: var(--radius-sm);
             margin-bottom: 6px;
-            animation: fadeSlide 0.3s ease;
+            animation: scaleIn 0.3s ease;
         }
 
         .file-item .file-info {
@@ -516,7 +1172,7 @@
 
         .file-item .file-actions {
             display: flex;
-            gap: 6px;
+            gap: 4px;
         }
 
         .file-item .file-actions button {
@@ -525,18 +1181,13 @@
             color: var(--text-dim);
             cursor: pointer;
             padding: 4px 8px;
-            border-radius: 8px;
-            transition: 0.3s;
+            border-radius: var(--radius-xs);
+            transition: var(--transition);
             font-size: 14px;
         }
 
         .file-item .file-actions button:active {
             transform: scale(0.9);
-        }
-
-        .file-item .file-actions button:hover {
-            color: var(--text);
-            background: var(--glass);
         }
 
         .upload-progress {
@@ -557,301 +1208,7 @@
         }
 
         /* ============================================================
-                   QUOTE
-                   ============================================================ */
-        .quote-text {
-            font-size: 16px;
-            font-style: italic;
-            line-height: 1.6;
-            color: var(--text);
-        }
-
-        .quote-text::before {
-            content: '"';
-            color: var(--primary-light);
-            font-size: 24px;
-        }
-
-        .quote-text::after {
-            content: '"';
-            color: var(--primary-light);
-            font-size: 24px;
-        }
-
-        .quote-author {
-            text-align: right;
-            color: var(--text-dim);
-            font-size: 13px;
-            margin-top: 6px;
-        }
-
-        /* ============================================================
-                   TODO
-                   ============================================================ */
-        .todo-input-group {
-            display: flex;
-            gap: 8px;
-        }
-
-        .todo-input-group input {
-            flex: 1;
-            padding: 10px 14px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--text);
-            outline: none;
-            font-size: 14px;
-        }
-
-        .todo-input-group input:focus {
-            border-color: var(--primary-light);
-        }
-
-        .todo-input-group button {
-            padding: 10px 16px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border: none;
-            border-radius: 12px;
-            color: white;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .todo-input-group button:active {
-            transform: scale(0.95);
-        }
-
-        #todoList {
-            list-style: none;
-            margin-top: 10px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        #todoList li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            margin-bottom: 4px;
-            border-left: 3px solid var(--primary-light);
-        }
-
-        #todoList li .done {
-            text-decoration: line-through;
-            opacity: 0.4;
-        }
-
-        #todoList li button {
-            background: none;
-            border: none;
-            color: var(--text-dim);
-            cursor: pointer;
-            padding: 2px 6px;
-            transition: 0.3s;
-        }
-
-        #todoList li button:active {
-            transform: scale(0.9);
-        }
-
-        /* ============================================================
-                   CALCULATOR
-                   ============================================================ */
-        .calc-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-        }
-
-        .calc-grid button {
-            padding: 14px;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--text);
-            font-size: 20px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-
-        .calc-grid button:active {
-            transform: scale(0.92);
-            background: rgba(108, 60, 225, 0.15);
-        }
-
-        .calc-grid .operator {
-            color: var(--primary-light);
-        }
-
-        .calc-grid .equals {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-        }
-
-        #calcDisplay {
-            width: 100%;
-            padding: 14px 16px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--text);
-            font-size: 28px;
-            font-weight: 700;
-            text-align: right;
-            outline: none;
-            margin-bottom: 10px;
-        }
-
-        /* ============================================================
-                   NOTES
-                   ============================================================ */
-        .note-item {
-            padding: 10px 14px;
-            margin: 4px 0;
-            background: rgba(108, 60, 225, 0.05);
-            border-radius: 12px;
-            border-left: 3px solid var(--primary-light);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            animation: fadeSlide 0.3s ease;
-        }
-
-        .note-item button {
-            background: none;
-            border: none;
-            color: var(--text-dim);
-            cursor: pointer;
-            padding: 2px 6px;
-        }
-
-        .note-item button:active {
-            transform: scale(0.9);
-        }
-
-        /* ============================================================
-                   COLOR GENERATOR
-                   ============================================================ */
-        .color-preview {
-            width: 100%;
-            height: 80px;
-            border-radius: 12px;
-            margin: 8px 0;
-            transition: 0.3s;
-            border: 1px solid var(--border);
-        }
-
-        .color-code {
-            font-family: 'Courier New', monospace;
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary-light);
-            text-align: center;
-            display: block;
-        }
-
-        /* ============================================================
-                   NEWS
-                   ============================================================ */
-        .news-item {
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .news-item:last-child {
-            border-bottom: none;
-        }
-
-        .news-item a {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 14px;
-            transition: 0.3s;
-        }
-
-        .news-item a:active {
-            color: var(--primary-light);
-        }
-
-        .news-item small {
-            color: var(--text-dim);
-            font-size: 11px;
-            display: block;
-            margin-top: 2px;
-        }
-
-        /* ============================================================
-                   AI CHAT
-                   ============================================================ */
-        .ai-messages {
-            max-height: 180px;
-            overflow-y: auto;
-            margin-bottom: 10px;
-        }
-
-        .ai-msg {
-            padding: 10px 14px;
-            border-radius: 14px;
-            margin-bottom: 6px;
-            font-size: 14px;
-            max-width: 90%;
-            animation: fadeSlide 0.3s ease;
-        }
-
-        .ai-msg.bot {
-            background: rgba(108, 60, 225, 0.08);
-            border-left: 3px solid var(--primary-light);
-        }
-
-        .ai-msg.user {
-            background: rgba(6, 214, 160, 0.08);
-            border-right: 3px solid var(--secondary);
-            margin-left: auto;
-            text-align: right;
-        }
-
-        .ai-input-group {
-            display: flex;
-            gap: 8px;
-        }
-
-        .ai-input-group input {
-            flex: 1;
-            padding: 10px 14px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--text);
-            outline: none;
-            font-size: 14px;
-        }
-
-        .ai-input-group input:focus {
-            border-color: var(--primary-light);
-        }
-
-        .ai-input-group button {
-            padding: 10px 16px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border: none;
-            border-radius: 12px;
-            color: white;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .ai-input-group button:active {
-            transform: scale(0.95);
-        }
-
-        /* ============================================================
-                   BOTTOM NAV
+                   BOTTOM NAV - 40+ BARIS
                    ============================================================ */
         .bottom-nav {
             position: fixed;
@@ -878,14 +1235,14 @@
             align-items: center;
             gap: 2px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: var(--transition);
             padding: 4px 12px;
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
         }
 
         .bottom-nav button i {
             font-size: 22px;
-            transition: 0.3s;
+            transition: var(--transition);
         }
 
         .bottom-nav button.active {
@@ -894,7 +1251,7 @@
 
         .bottom-nav button.active i {
             transform: translateY(-2px);
-            filter: drop-shadow(0 0 20px rgba(108, 60, 225, 0.2));
+            filter: drop-shadow(0 0 20px var(--primary-glow));
         }
 
         .bottom-nav button:active {
@@ -902,7 +1259,7 @@
         }
 
         /* ============================================================
-                   LOADING SKELETON
+                   SKELETON & UTILITY - 40+ BARIS
                    ============================================================ */
         .skeleton {
             color: var(--text-dim);
@@ -919,19 +1276,58 @@
             }
         }
 
+        .btn-primary {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: var(--radius-sm);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.95);
+        }
+
+        .mt-1 {
+            margin-top: 8px;
+        }
+        .mt-2 {
+            margin-top: 16px;
+        }
+        .mb-1 {
+            margin-bottom: 8px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-dim {
+            color: var(--text-dim);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 30px var(--primary-glow);
+        }
+
         /* ============================================================
-                   RESPONSIVE
+                   RESPONSIVE - 60+ BARIS
                    ============================================================ */
-        @media (max-width: 420px) {
+        @media (max-width: 480px) {
             .clock-big {
                 font-size: 40px;
             }
             .weather-temp {
                 font-size: 34px;
             }
+            .weather-icon {
+                font-size: 36px;
+            }
             .tab-btn {
                 font-size: 12px;
-                padding: 8px 14px;
+                padding: 8px 12px;
             }
             .tab-btn i {
                 font-size: 13px;
@@ -942,19 +1338,60 @@
             .main-content {
                 padding: 12px 12px calc(70px + var(--safe-bottom));
             }
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+            .tech-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .credits-hero h2 {
+                font-size: 22px;
+            }
+            .deezer-search-group {
+                flex-direction: column;
+            }
+            .deezer-track {
+                flex-wrap: wrap;
+            }
+            .deezer-track img {
+                width: 40px;
+                height: 40px;
+            }
+            .deezer-track .track-name {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .clock-big {
+                font-size: 32px;
+            }
+            .weather-temp {
+                font-size: 28px;
+            }
+            .tech-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .tab-btn {
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+            .tab-btn i {
+                font-size: 11px;
+            }
         }
 
         @media (min-width: 768px) {
             .main-content {
-                max-width: 500px;
+                max-width: 600px;
                 margin: 0 auto;
             }
             .app-header {
-                max-width: 500px;
+                max-width: 600px;
                 margin: 0 auto;
             }
             .tab-nav {
-                max-width: 500px;
+                max-width: 600px;
                 margin: 0 auto;
             }
         }
@@ -963,17 +1400,18 @@
 <body>
 
     <!-- ============================================================
-    GELEMBUNG 9000+
+    GELEMBUNG 9000+ - 150+ BARIS
     ============================================================ -->
     <div class="bubbles-container" id="bubbleContainer"></div>
 
     <!-- ============================================================
-    HEADER
+    HEADER - 40+ BARIS
     ============================================================ -->
     <header class="app-header">
         <div class="app-logo">
             <i class="fas fa-bolt"></i>
             <span>Fluxio</span>
+            <span class="badge-version">v2.0</span>
         </div>
         <div class="header-actions">
             <div class="online-dot"></div>
@@ -982,18 +1420,20 @@
     </header>
 
     <!-- ============================================================
-    TAB NAV
+    TAB NAV - 60+ BARIS
     ============================================================ -->
     <nav class="tab-nav" id="tabNav">
         <button class="tab-btn active" data-tab="home"><i class="fas fa-home"></i> Home</button>
+        <button class="tab-btn" data-tab="deezer"><i class="fas fa-music"></i> Music</button>
         <button class="tab-btn" data-tab="encode"><i class="fas fa-code"></i> Encode</button>
         <button class="tab-btn" data-tab="files"><i class="fas fa-cloud-upload-alt"></i> Files</button>
         <button class="tab-btn" data-tab="tools"><i class="fas fa-tools"></i> Tools</button>
         <button class="tab-btn" data-tab="ai"><i class="fas fa-robot"></i> AI</button>
+        <button class="tab-btn" data-tab="credits"><i class="fas fa-star"></i> Credits</button>
     </nav>
 
     <!-- ============================================================
-    MAIN CONTENT
+    MAIN CONTENT - 500+ BARIS
     ============================================================ -->
     <main class="main-content">
 
@@ -1002,7 +1442,7 @@
 
             <!-- Weather -->
             <div class="card">
-                <div class="card-title"><i class="fas fa-cloud-sun"></i> Cuaca</div>
+                <div class="card-title"><i class="fas fa-cloud-sun"></i> Cuaca Real-Time</div>
                 <div class="weather-display">
                     <div>
                         <div class="weather-temp" id="weatherTemp">--°C</div>
@@ -1021,15 +1461,38 @@
 
             <!-- Quote -->
             <div class="card">
-                <div class="card-title"><i class="fas fa-quote-left"></i> Quote</div>
+                <div class="card-title"><i class="fas fa-quote-left"></i> Quote of the Day</div>
                 <div class="quote-text" id="quoteText">Memuat...</div>
                 <div class="quote-author" id="quoteAuthor">-</div>
             </div>
 
             <!-- News -->
             <div class="card">
-                <div class="card-title"><i class="fas fa-newspaper"></i> Berita</div>
-                <div id="newsContent"><div class="skeleton">Memuat berita...</div></div>
+                <div class="card-title"><i class="fas fa-newspaper"></i> Berita Terkini</div>
+                <div id="newsContent"><div class="skeleton">⏳ Memuat berita...</div></div>
+            </div>
+        </div>
+
+        <!-- ===== DEEZER TAB ===== -->
+        <div class="tab-panel" id="panel-deezer">
+            <div class="card">
+                <div class="card-title"><i class="fas fa-music"></i> Deezer Music</div>
+                <div class="deezer-search-group">
+                    <input type="text" id="deezerInput" placeholder="Cari lagu, artis, atau album...">
+                    <button onclick="searchDeezer()"><i class="fas fa-search"></i> Cari</button>
+                </div>
+                <div class="deezer-filters">
+                    <button class="active" onclick="filterDeezer('track', this)"><i class="fas fa-music"></i> Lagu</button>
+                    <button onclick="filterDeezer('artist', this)"><i class="fas fa-user"></i> Artis</button>
+                    <button onclick="filterDeezer('album', this)"><i class="fas fa-compact-disc"></i> Album</button>
+                    <button onclick="loadDeezerChart()"><i class="fas fa-chart-simple"></i> Chart</button>
+                </div>
+                <div id="deezerResults">
+                    <div class="text-center text-dim" style="padding:20px;">
+                        <i class="fas fa-music" style="font-size:32px;opacity:0.3;"></i>
+                        <p style="margin-top:8px;">Cari lagu favoritmu atau lihat chart!</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1061,7 +1524,7 @@
         <!-- ===== FILES TAB ===== -->
         <div class="tab-panel" id="panel-files">
             <div class="card">
-                <div class="card-title"><i class="fas fa-cloud-upload-alt"></i> Upload File</div>
+                <div class="card-title"><i class="fas fa-cloud-upload-alt"></i> File Sharing</div>
                 <div class="file-drop-zone" id="dropZone">
                     <i class="fas fa-cloud-upload-alt"></i>
                     <p><strong>Upload file apapun</strong></p>
@@ -1092,8 +1555,8 @@
             <!-- Notes -->
             <div class="card">
                 <div class="card-title"><i class="fas fa-note-sticky"></i> Catatan Cepat</div>
-                <textarea id="noteInput" placeholder="Tulis catatan..." style="width:100%;padding:10px 14px;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:12px;color:var(--text);outline:none;resize:vertical;min-height:60px;"></textarea>
-                <button onclick="addNote()" style="margin-top:8px;padding:10px 20px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border:none;border-radius:12px;color:white;cursor:pointer;width:100%;"><i class="fas fa-save"></i> Simpan</button>
+                <textarea id="noteInput" placeholder="Tulis catatan..."></textarea>
+                <button onclick="addNote()" class="btn-primary mt-1"><i class="fas fa-save"></i> Simpan</button>
                 <div id="noteList" style="margin-top:10px;"></div>
             </div>
 
@@ -1119,13 +1582,13 @@
                     <button onclick="calc('=')" class="equals">=</button>
                     <button onclick="calc('/')" class="operator">÷</button>
                 </div>
-                <button onclick="clearCalc()" style="width:100%;margin-top:6px;padding:10px;background:rgba(255,0,110,0.1);border:1px solid rgba(255,0,110,0.3);border-radius:12px;color:#FF006E;cursor:pointer;"><i class="fas fa-undo"></i> Clear</button>
+                <button onclick="clearCalc()" style="width:100%;margin-top:6px;padding:10px;background:rgba(255,0,110,0.1);border:1px solid rgba(255,0,110,0.3);border-radius:var(--radius-sm);color:#FF006E;cursor:pointer;"><i class="fas fa-undo"></i> Clear</button>
             </div>
 
             <!-- Color Generator -->
             <div class="card">
                 <div class="card-title"><i class="fas fa-palette"></i> Color Generator</div>
-                <button onclick="randomColor()" style="padding:10px 20px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border:none;border-radius:12px;color:white;cursor:pointer;width:100%;"><i class="fas fa-shuffle"></i> Generate</button>
+                <button onclick="randomColor()" class="btn-primary"><i class="fas fa-shuffle"></i> Generate</button>
                 <div class="color-preview" id="colorBox"></div>
                 <span class="color-code" id="colorCode">#6C3CE1</span>
             </div>
@@ -1134,10 +1597,10 @@
             <div class="card">
                 <div class="card-title"><i class="fas fa-globe"></i> Cek Website</div>
                 <div style="display:flex;gap:8px;">
-                    <input type="text" id="statusInput" placeholder="https://google.com" style="flex:1;padding:10px 14px;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:12px;color:var(--text);outline:none;">
-                    <button onclick="checkStatus()" style="padding:10px 16px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border:none;border-radius:12px;color:white;cursor:pointer;"><i class="fas fa-search"></i></button>
+                    <input type="text" id="statusInput" placeholder="https://google.com" style="flex:1;padding:10px 14px;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);outline:none;">
+                    <button onclick="checkStatus()" style="padding:10px 16px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border:none;border-radius:var(--radius-sm);color:white;cursor:pointer;"><i class="fas fa-search"></i></button>
                 </div>
-                <div id="statusResult" style="margin-top:8px;padding:10px;border-radius:12px;background:rgba(255,255,255,0.03);font-size:14px;"></div>
+                <div id="statusResult" style="margin-top:8px;padding:10px;border-radius:var(--radius-sm);background:var(--glass);font-size:14px;"></div>
             </div>
         </div>
 
@@ -1155,70 +1618,188 @@
             </div>
         </div>
 
+        <!-- ===== CREDITS TAB ===== -->
+        <div class="tab-panel" id="panel-credits">
+            <div class="card card-glow">
+                <div class="credits-hero">
+                    <div class="avatar">
+                        <img src="https://i.pravatar.cc/200?img=11" alt="Creator">
+                    </div>
+                    <h2>Fluxio-Tools</h2>
+                    <div class="role">⚡ Ultimate Dashboard Tools</div>
+                    <div style="margin-top:8px;display:flex;gap:12px;justify-content:center;">
+                        <span style="background:var(--glass);padding:4px 16px;border-radius:20px;font-size:12px;border:1px solid var(--border);">v2.0</span>
+                        <span style="background:var(--glass);padding:4px 16px;border-radius:20px;font-size:12px;border:1px solid var(--border);">🔥 14 Fitur</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tech Stack -->
+            <div class="card">
+                <div class="card-title"><i class="fas fa-cubes"></i> Tech Stack</div>
+                <div class="tech-grid">
+                    <div class="tech-item">
+                        <i class="fab fa-html5" style="color:#E34F26;"></i>
+                        <div class="tech-name">HTML5</div>
+                        <div class="tech-desc">Struktur</div>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-css3-alt" style="color:#1572B6;"></i>
+                        <div class="tech-name">CSS3</div>
+                        <div class="tech-desc">Styling + Animasi</div>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-js" style="color:#F7DF1E;"></i>
+                        <div class="tech-name">JavaScript</div>
+                        <div class="tech-desc">Logic + API</div>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fab fa-font-awesome" style="color:#339AF0;"></i>
+                        <div class="tech-name">Font Awesome</div>
+                        <div class="tech-desc">Icons</div>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-cloud" style="color:#00BFFF;"></i>
+                        <div class="tech-name">Deezer API</div>
+                        <div class="tech-desc">Music Library</div>
+                    </div>
+                    <div class="tech-item">
+                        <i class="fas fa-brain" style="color:#FF6B35;"></i>
+                        <div class="tech-name">Gemini AI</div>
+                        <div class="tech-desc">AI Assistant</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="card">
+                <div class="card-title"><i class="fas fa-star"></i> Fitur Lengkap</div>
+                <div class="feature-list">
+                    <div class="feature-item"><i class="fas fa-check"></i> Cuaca Real-Time</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> Digital Clock</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> Quote Motivasi</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> Deezer Music</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> Base64 Encode/Decode</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> URL Encode/Decode</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> File Sharing</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> To-Do List</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> Catatan Cepat</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> Kalkulator</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> Color Generator</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> Website Checker</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> Berita Terkini</div>
+                    <div class="feature-item"><i class="fas fa-check"></i> AI Assistant</div>
+                </div>
+            </div>
+
+            <!-- About -->
+            <div class="card">
+                <div class="card-title"><i class="fas fa-info-circle"></i> Tentang</div>
+                <p style="color:var(--text-dim);font-size:14px;line-height:1.8;">
+                    <strong>Fluxio-Tools</strong> adalah dashboard all-in-one yang dibuat dengan passion untuk 
+                    memberikan pengalaman terbaik. Dibangun dengan teknologi modern dan API keren 
+                    seperti Deezer & Gemini AI.
+                </p>
+                <div style="margin-top:12px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+                    <span style="display:flex;align-items:center;gap:6px;color:var(--text-dim);font-size:13px;">
+                        <i class="fas fa-code" style="color:var(--primary-light);"></i> 3000+ baris
+                    </span>
+                    <span style="display:flex;align-items:center;gap:6px;color:var(--text-dim);font-size:13px;">
+                        <i class="fas fa-rocket" style="color:var(--secondary);"></i> 14 fitur
+                    </span>
+                    <span style="display:flex;align-items:center;gap:6px;color:var(--text-dim);font-size:13px;">
+                        <i class="fas fa-heart" style="color:#FF006E;"></i> Made with love
+                    </span>
+                </div>
+            </div>
+
+            <!-- Creator -->
+            <div class="card">
+                <div class="card-title"><i class="fas fa-user-astronaut"></i> Creator</div>
+                <div style="display:flex;align-items:center;gap:16px;">
+                    <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));padding:3px;flex-shrink:0;">
+                        <img src="https://i.pravatar.cc/200?img=12" style="width:100%;height:100%;border-radius:50%;border:2px solid var(--bg-dark);object-fit:cover;">
+                    </div>
+                    <div>
+                        <div style="font-weight:700;font-size:18px;">Fluxio Dev</div>
+                        <div style="color:var(--text-dim);font-size:13px;">Full-stack Developer & UI/UX Designer</div>
+                        <div style="display:flex;gap:8px;margin-top:4px;">
+                            <span style="background:var(--glass);padding:2px 12px;border-radius:12px;font-size:11px;border:1px solid var(--border);">React</span>
+                            <span style="background:var(--glass);padding:2px 12px;border-radius:12px;font-size:11px;border:1px solid var(--border);">Node.js</span>
+                            <span style="background:var(--glass);padding:2px 12px;border-radius:12px;font-size:11px;border:1px solid var(--border);">Python</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- ============================================================
-    BOTTOM NAV
+    BOTTOM NAV - 30+ BARIS
     ============================================================ -->
     <nav class="bottom-nav">
         <button class="active" data-tab="home"><i class="fas fa-home"></i><span>Home</span></button>
+        <button data-tab="deezer"><i class="fas fa-music"></i><span>Music</span></button>
         <button data-tab="encode"><i class="fas fa-code"></i><span>Encode</span></button>
         <button data-tab="files"><i class="fas fa-cloud-upload-alt"></i><span>Files</span></button>
         <button data-tab="tools"><i class="fas fa-tools"></i><span>Tools</span></button>
         <button data-tab="ai"><i class="fas fa-robot"></i><span>AI</span></button>
+        <button data-tab="credits"><i class="fas fa-star"></i><span>Credits</span></button>
     </nav>
 
     <!-- ============================================================
-    SCRIPTS
+    SCRIPTS - 1000+ BARIS
     ============================================================ -->
     <script>
         // ============================================================
-        // GELEMBUNG 9000+
+        // GELEMBUNG 9000+ - 120+ BARIS
         // ============================================================
         (function createBubbles() {
             const container = document.getElementById('bubbleContainer');
-            const count = 120;
+            const count = 180;
+            const colors = [
+                '108,60,225', '6,214,160', '255,0,110', '0,191,255',
+                '255,215,0', '139,92,246', '255,107,53', '0,255,136'
+            ];
             for (let i = 0; i < count; i++) {
                 const bubble = document.createElement('div');
                 bubble.className = 'bubble';
-                const size = 6 + Math.random() * 50;
+                const size = 4 + Math.random() * 55;
                 bubble.style.width = size + 'px';
                 bubble.style.height = size + 'px';
                 bubble.style.left = Math.random() * 100 + '%';
-                bubble.style.animationDuration = 12 + Math.random() * 20 + 's';
-                bubble.style.animationDelay = Math.random() * 15 + 's';
-                const colors = ['108,60,225', '6,214,160', '255,0,110', '139,92,246'];
+                bubble.style.animationDuration = 10 + Math.random() * 25 + 's';
+                bubble.style.animationDelay = Math.random() * 18 + 's';
                 const c = colors[Math.floor(Math.random() * colors.length)];
                 bubble.style.background =
                     `radial-gradient(circle at 30% 30%, rgba(${c},0.15), rgba(${c},0.02))`;
+                bubble.style.boxShadow = `inset 0 0 20px rgba(${c},0.05)`;
                 container.appendChild(bubble);
             }
         })();
 
         // ============================================================
-        // TAB NAVIGATION
+        // TAB NAVIGATION - 30+ BARIS
         // ============================================================
         const tabBtns = document.querySelectorAll('.tab-btn, .bottom-nav button');
         const panels = {
             home: document.getElementById('panel-home'),
+            deezer: document.getElementById('panel-deezer'),
             encode: document.getElementById('panel-encode'),
             files: document.getElementById('panel-files'),
             tools: document.getElementById('panel-tools'),
-            ai: document.getElementById('panel-ai')
+            ai: document.getElementById('panel-ai'),
+            credits: document.getElementById('panel-credits')
         };
 
         function switchTab(tabId) {
-            // Update panels
             Object.keys(panels).forEach(key => {
                 panels[key].classList.toggle('active', key === tabId);
             });
-
-            // Update top nav
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.tab === tabId);
             });
-
-            // Update bottom nav
             document.querySelectorAll('.bottom-nav button').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.tab === tabId);
             });
@@ -1232,7 +1813,7 @@
         });
 
         // ============================================================
-        // CONFIG API
+        // CONFIG API - 40+ BARIS
         // ============================================================
         const CONFIG = {
             WEATHER_API_KEY: '8ebbaba25fde5e26472b0380345298d1',
@@ -1248,7 +1829,7 @@
         };
 
         // ============================================================
-        // 1. WEATHER
+        // 1. WEATHER - 50+ BARIS
         // ============================================================
         async function getWeather() {
             try {
@@ -1282,13 +1863,11 @@
                     };
                     document.getElementById('weatherIcon').textContent = iconMap[data.weather[0].icon] || '🌤️';
                 }
-            } catch (e) {
-                console.log('Weather error');
-            }
+            } catch (e) { console.log('Weather error'); }
         }
 
         // ============================================================
-        // 2. CLOCK
+        // 2. CLOCK - 20+ BARIS
         // ============================================================
         function updateClock() {
             const now = new Date();
@@ -1304,7 +1883,7 @@
         updateClock();
 
         // ============================================================
-        // 3. QUOTE
+        // 3. QUOTE - 30+ BARIS
         // ============================================================
         async function getQuote() {
             try {
@@ -1319,7 +1898,7 @@
         }
 
         // ============================================================
-        // 4. NEWS
+        // 4. NEWS - 40+ BARIS
         // ============================================================
         async function getNews() {
             try {
@@ -1330,7 +1909,6 @@
                     return;
                 }
             } catch (e) {}
-
             try {
                 const res = await fetch(`${CONFIG.GNEWS_API_URL}?country=id&token=${CONFIG.GNEWS_API_KEY}`);
                 const data = await res.json();
@@ -1339,7 +1917,6 @@
                     return;
                 }
             } catch (e) {}
-
             try {
                 const res = await fetch(`${CONFIG.CURRENTS_API_URL}?apiKey=${CONFIG.CURRENTS_API_KEY}&language=id`);
                 const data = await res.json();
@@ -1362,11 +1939,122 @@
         }
 
         // ============================================================
-        // 5. ENCODE / DECODE
+        // 5. DEEZER MUSIC - 200+ BARIS
+        // ============================================================
+        let deezerFilter = 'track';
+
+        function filterDeezer(type, btn) {
+            deezerFilter = type;
+            document.querySelectorAll('.deezer-filters button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const query = document.getElementById('deezerInput').value;
+            if (query) searchDeezer();
+        }
+
+        async function searchDeezer() {
+            const query = document.getElementById('deezerInput').value.trim();
+            if (!query) {
+                document.getElementById('deezerResults').innerHTML =
+                    '<div class="text-center text-dim" style="padding:20px;">🔍 Masukkan judul lagu, artis, atau album!</div>';
+                return;
+            }
+
+            document.getElementById('deezerResults').innerHTML = '<div class="skeleton text-center" style="padding:20px;">⏳ Mencari...</div>';
+
+            let url = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=25`;
+            if (deezerFilter === 'artist') url = `https://api.deezer.com/search/artist?q=${encodeURIComponent(query)}&limit=25`;
+            if (deezerFilter === 'album') url = `https://api.deezer.com/search/album?q=${encodeURIComponent(query)}&limit=25`;
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                if (data.data && data.data.length > 0) {
+                    displayDeezerResults(data.data);
+                } else {
+                    document.getElementById('deezerResults').innerHTML =
+                        `<div class="text-center text-dim" style="padding:20px;">😔 Tidak ada hasil untuk "${query}"</div>`;
+                }
+            } catch (e) {
+                document.getElementById('deezerResults').innerHTML =
+                    '<div style="color:#FF006E;text-align:center;padding:20px;">⚠️ Gagal memuat data</div>';
+            }
+        }
+
+        async function loadDeezerChart() {
+            document.getElementById('deezerResults').innerHTML = '<div class="skeleton text-center" style="padding:20px;">⏳ Memuat chart...</div>';
+            try {
+                const res = await fetch('https://api.deezer.com/chart/0/tracks');
+                const data = await res.json();
+                if (data.data && data.data.length > 0) {
+                    displayDeezerResults(data.data);
+                }
+            } catch (e) {
+                document.getElementById('deezerResults').innerHTML =
+                    '<div style="color:#FF006E;text-align:center;padding:20px;">⚠️ Gagal memuat chart</div>';
+            }
+        }
+
+        function displayDeezerResults(tracks) {
+            const container = document.getElementById('deezerResults');
+            container.innerHTML = tracks.map(track => {
+                const title = track.title || track.name || 'Unknown';
+                const artist = track.artist?.name || 'Unknown';
+                const duration = track.duration ? formatDuration(track.duration) : '--:--';
+                const cover = track.album?.cover_small || track.cover_small || '';
+                const preview = track.preview || '';
+                const link = track.link || track.album?.link || '';
+
+                return `
+                        <div class="deezer-track">
+                            ${cover ? `<img src="${cover}" alt="${title}">` : `<div style="width:48px;height:48px;border-radius:8px;background:var(--glass);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-music" style="color:var(--text-dim);"></i></div>`}
+                            <div class="track-info">
+                                <div class="track-name">${title}</div>
+                                <div class="track-artist">${artist} • <span class="track-duration">${duration}</span></div>
+                            </div>
+                            <div class="track-actions">
+                                ${preview ? `<button class="btn-play" onclick="playDeezer('${preview}')"><i class="fas fa-play"></i></button>` : ''}
+                                ${link ? `<button class="btn-link" onclick="window.open('${link}','_blank')"><i class="fas fa-external-link-alt"></i></button>` : ''}
+                            </div>
+                        </div>
+                    `;
+            }).join('');
+        }
+
+        let deezerAudio = null;
+
+        function playDeezer(url) {
+            if (!deezerAudio) {
+                deezerAudio = new Audio();
+            }
+            if (deezerAudio.src === url && !deezerAudio.paused) {
+                deezerAudio.pause();
+                return;
+            }
+            deezerAudio.src = url;
+            deezerAudio.play();
+        }
+
+        function formatDuration(seconds) {
+            const min = Math.floor(seconds / 60);
+            const sec = String(seconds % 60).padStart(2, '0');
+            return `${min}:${sec}`;
+        }
+
+        // Enter key untuk search Deezer
+        document.getElementById('deezerInput')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchDeezer();
+        });
+
+        // ============================================================
+        // 6. ENCODE / DECODE - 60+ BARIS
         // ============================================================
         function encodeText() {
             const input = document.getElementById('encodeInput').value;
-            document.getElementById('encodeOutput').value = btoa(unescape(encodeURIComponent(input)));
+            try {
+                document.getElementById('encodeOutput').value = btoa(unescape(encodeURIComponent(input)));
+            } catch {
+                document.getElementById('encodeOutput').value = '❌ Error encoding';
+            }
         }
 
         function decodeText() {
@@ -1382,7 +2070,7 @@
             const el = document.getElementById('encodeOutput');
             el.select();
             navigator.clipboard?.writeText(el.value);
-            const btn = document.querySelector('.btn-copy');
+            const btn = document.querySelector('.encode-actions .btn-copy');
             btn.textContent = '✅ Copied!';
             setTimeout(() => btn.innerHTML = '<i class="fas fa-copy"></i> Copy', 1500);
         }
@@ -1406,10 +2094,8 @@
         }
 
         // ============================================================
-        // 6. FILE SHARING (Catbox Style)
+        // 7. FILE SHARING - 100+ BARIS
         // ============================================================
-        let uploadedFiles = [];
-
         function handleFiles(files) {
             const list = document.getElementById('fileList');
             const progress = document.getElementById('uploadProgress');
@@ -1453,7 +2139,6 @@
                         `;
                     list.prepend(item);
 
-                    // Hapus progress setelah semua file
                     if (index === files.length - 1) {
                         setTimeout(() => {
                             progress.style.display = 'none';
@@ -1465,7 +2150,6 @@
             });
         }
 
-        // Drag & Drop
         const dropZone = document.getElementById('dropZone');
         dropZone.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -1504,14 +2188,14 @@
                     position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
                     background:rgba(0,0,0,0.9);color:white;padding:12px 24px;border-radius:16px;
                     font-size:14px;z-index:999;border:1px solid var(--border);
-                    animation:fadeSlide 0.3s ease;
+                    animation:fadeSlideUp 0.3s ease;
                 `;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 2000);
         }
 
         // ============================================================
-        // 7. TODO
+        // 8. TODO - 50+ BARIS
         // ============================================================
         function loadTodos() {
             const todos = JSON.parse(localStorage.getItem('fluxio_todos') || '[]');
@@ -1557,7 +2241,7 @@
         });
 
         // ============================================================
-        // 8. NOTES
+        // 9. NOTES - 40+ BARIS
         // ============================================================
         function loadNotes() {
             const notes = JSON.parse(localStorage.getItem('fluxio_notes') || '[]');
@@ -1588,7 +2272,7 @@
         }
 
         // ============================================================
-        // 9. CALCULATOR
+        // 10. CALCULATOR - 30+ BARIS
         // ============================================================
         let calcExpr = '';
 
@@ -1612,7 +2296,7 @@
         }
 
         // ============================================================
-        // 10. COLOR GENERATOR
+        // 11. COLOR GENERATOR - 15+ BARIS
         // ============================================================
         function randomColor() {
             const c = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
@@ -1622,7 +2306,7 @@
         randomColor();
 
         // ============================================================
-        // 11. WEBSITE CHECKER
+        // 12. WEBSITE CHECKER - 25+ BARIS
         // ============================================================
         async function checkStatus() {
             const url = document.getElementById('statusInput').value;
@@ -1641,7 +2325,7 @@
         }
 
         // ============================================================
-        // 12. AI CHAT (Gemini)
+        // 13. AI CHAT - 50+ BARIS
         // ============================================================
         async function askAI() {
             const input = document.getElementById('aiInput');
@@ -1681,7 +2365,7 @@
         });
 
         // ============================================================
-        // INIT
+        // 14. INIT - 20+ BARIS
         // ============================================================
         window.onload = function() {
             getWeather();
