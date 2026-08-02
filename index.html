@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Fluxio-Tools V8</title>
+    <title>Fluxio-Tools V8.2</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -165,54 +165,15 @@
             50% { transform: translateY(-6px); }
         }
 
-        @keyframes float-hard {
-            0%,100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-8px) rotate(-1deg); }
-            75% { transform: translateY(8px) rotate(1deg); }
-        }
-
         @keyframes spin-slow {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
-        }
-
-        @keyframes glow-pulse {
-            0%,100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
-        }
-
-        @keyframes typing {
-            0% { width: 0; }
-            100% { width: 100%; }
-        }
-
-        @keyframes blink-cursor {
-            0%,100% { border-color: transparent; }
-            50% { border-color: var(--primary-light); }
-        }
-
-        @keyframes bounce-in {
-            0% { opacity: 0; transform: scale(0.5) translateY(20px); }
-            60% { opacity: 1; transform: scale(1.05) translateY(-5px); }
-            100% { transform: scale(1) translateY(0); }
-        }
-
-        @keyframes rainbow-bg {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
         }
 
         .animate-float { animation: float-soft 3s ease-in-out infinite; }
         .animate-pulse { animation: pulse-glow 2s ease-in-out infinite; }
         .animate-spin { animation: spin-slow 10s linear infinite; }
         .animate-shimmer { background-size: 200% auto; animation: shimmer 3s ease-in-out infinite; }
-        .animate-bounce { animation: bounce-in 0.6s ease; }
-        .animate-rainbow:hover { animation: rainbow-bg 2s linear infinite; }
-
-        .delay-1 { animation-delay: 0.15s; }
-        .delay-2 { animation-delay: 0.3s; }
-        .delay-3 { animation-delay: 0.45s; }
-        .delay-4 { animation-delay: 0.6s; }
 
         /* ============================================================
                    HEADER - 80+ BARIS
@@ -861,7 +822,7 @@
         <div class="app-logo">
             <i class="fas fa-bolt"></i>
             <span>Fluxio</span>
-            <span class="badge-version">v8.1</span>
+            <span class="badge-version">v8.2</span>
         </div>
         <div class="header-actions">
             <div class="online-dot"></div>
@@ -884,9 +845,9 @@
             <i class="fas fa-volume-mute"></i>
         </button>
         <div class="banner-text">
-            <span>⚡ Fluxio-Tools V8.1</span>
+            <span>⚡ Fluxio-Tools V8.2</span>
             <span>🌊 16 Fitur</span>
-            <span>🤖 AI Fix</span>
+            <span>🤖 OpenRouter AI</span>
         </div>
     </div>
 
@@ -1102,9 +1063,9 @@
         <!-- ===== AI ===== -->
         <div class="tab-panel" id="panel-ai">
             <div class="card">
-                <div class="card-title"><i class="fas fa-robot"></i> AI Assistant</div>
+                <div class="card-title"><i class="fas fa-robot"></i> AI Assistant (OpenRouter)</div>
                 <div class="ai-messages" id="aiMessages">
-                    <div class="ai-msg bot">Halo! Saya AI Assistant. Tanya apa saja! 😊</div>
+                    <div class="ai-msg bot">Halo! Saya AI Assistant (OpenRouter). Tanya apa saja! 😊</div>
                 </div>
                 <div class="ai-input-group">
                     <input type="text" id="aiInput" placeholder="Tanya ke AI..." autocomplete="off">
@@ -1120,13 +1081,13 @@
                     <div class="avatar">
                         <img src="https://raw.githubusercontent.com/JARSTORE9/Fluxio-tools/main/profile.jpg" alt="Creator">
                     </div>
-                    <h2>Fluxio-Tools V8.1</h2>
-                    <div class="role">🌊 16 Fitur • Chat Realtime • AI Fix</div>
+                    <h2>Fluxio-Tools V8.2</h2>
+                    <div class="role">🌊 16 Fitur • Chat Realtime • OpenRouter AI</div>
                     <div style="margin-top:6px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-                        <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">v8.1</span>
+                        <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">v8.2</span>
                         <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">🔥 16 Fitur</span>
                         <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">🌊 Ombak Kalem</span>
-                        <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">🤖 AI Fix</span>
+                        <span style="background:var(--glass);padding:2px 12px;border-radius:14px;font-size:10px;border:1px solid var(--border);">🤖 OpenRouter AI</span>
                     </div>
                 </div>
             </div>
@@ -1139,7 +1100,7 @@
                     <div class="tech-item"><i class="fab fa-js" style="color:#F7DF1E;"></i><div class="tech-name">JavaScript</div><div class="tech-desc">Logic + API</div></div>
                     <div class="tech-item"><i class="fab fa-font-awesome" style="color:#339AF0;"></i><div class="tech-name">Font Awesome</div><div class="tech-desc">Icons</div></div>
                     <div class="tech-item"><i class="fas fa-cloud" style="color:#00BFFF;"></i><div class="tech-name">OpenWeather</div><div class="tech-desc">Cuaca</div></div>
-                    <div class="tech-item"><i class="fas fa-brain" style="color:#FF6B35;"></i><div class="tech-name">Gemini AI</div><div class="tech-desc">AI Assistant</div></div>
+                    <div class="tech-item"><i class="fas fa-brain" style="color:#FF6B35;"></i><div class="tech-name">OpenRouter AI</div><div class="tech-desc">AI Assistant</div></div>
                 </div>
             </div>
 
@@ -1168,9 +1129,9 @@
             <div class="card">
                 <div class="card-title"><i class="fas fa-info-circle"></i> Tentang</div>
                 <p style="color:var(--text-dim);font-size:13px;line-height:1.7;">
-                    <strong>Fluxio-Tools V8.1</strong> adalah dashboard all-in-one dengan 
+                    <strong>Fluxio-Tools V8.2</strong> adalah dashboard all-in-one dengan 
                     <strong>16 fitur</strong>, <strong>chat realtime</strong>, dan 
-                    <strong>AI Assistant</strong>. Efek ombak kalem & animasi ringan.
+                    <strong>OpenRouter AI</strong> (support banyak model). Efek ombak kalem & animasi ringan.
                 </p>
                 <div style="margin-top:8px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
                     <span style="display:flex;align-items:center;gap:4px;color:var(--text-dim);font-size:12px;">
@@ -1200,7 +1161,7 @@
     </nav>
 
     <!-- ============================================================
-    SCRIPTS - 3000+ BARIS - ALL FIXED!
+    SCRIPTS - 3000+ BARIS - OPENROUTER AI
     ============================================================ -->
     <script>
         // ============================================================
@@ -1292,7 +1253,7 @@
         });
 
         // ============================================================
-        // CONFIG - API KEY UPDATED!
+        // CONFIG - OPENROUTER AI
         // ============================================================
         const CONFIG = {
             WEATHER_API_KEY: '8ebbaba25fde5e26472b0380345298d1',
@@ -1303,9 +1264,10 @@
             GNEWS_API_URL: 'https://gnews.io/api/v4/top-headlines',
             CURRENTS_API_KEY: 'DzXC9X1iBzYVwPGhqfLDmjE1_r3P2d7BC2FyzSXuMVZQHlut',
             CURRENTS_API_URL: 'https://api.currentsapi.services/v1/latest-news',
-            // API KEY GEMINI YANG BARU!
-            GEMINI_API_KEY: 'AQ.Ab8RN6I1y0iJjUbGSlUXRHQB6Pv3sGYmLwAgwdgZfe0t4NQBxQ',
-            GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent'
+            // OPENROUTER AI
+            OPENROUTER_API_KEY: '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',
+            OPENROUTER_API_URL: 'https://openrouter.ai/api/v1/chat/completions',
+            OPENROUTER_MODEL: 'google/gemini-flash-1.5' // atau ganti model lain
         };
 
         // ============================================================
@@ -1852,7 +1814,7 @@
         }
 
         // ============================================================
-        // AI CHAT - FIXED 100% WITH NEW API KEY!
+        // AI CHAT - OPENROUTER AI
         // ============================================================
         async function askAI() {
             const input = document.getElementById('aiInput');
@@ -1877,16 +1839,19 @@
             container.scrollTop = container.scrollHeight;
 
             try {
-                const response = await fetch(CONFIG.GEMINI_API_URL, {
+                const response = await fetch(CONFIG.OPENROUTER_API_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-goog-api-key': CONFIG.GEMINI_API_KEY
+                        'Authorization': `Bearer ${CONFIG.OPENROUTER_API_KEY}`,
+                        'HTTP-Referer': window.location.href,
+                        'X-Title': 'Fluxio-Tools'
                     },
                     body: JSON.stringify({
-                        contents: [{
-                            parts: [{ text: q }]
-                        }]
+                        model: CONFIG.OPENROUTER_MODEL,
+                        messages: [
+                            { role: 'user', content: q }
+                        ]
                     })
                 });
 
@@ -1897,7 +1862,7 @@
                 if (loadingEl) loadingEl.remove();
 
                 // Ambil jawaban
-                let answer = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                let answer = data.choices?.[0]?.message?.content;
 
                 if (!answer) {
                     if (data.error) {
@@ -1943,12 +1908,12 @@
             setInterval(getQuote, 300000);
             setInterval(getNews, 300000);
 
-            console.log('🚀 Fluxio-Tools V8.1 Loaded!');
+            console.log('🚀 Fluxio-Tools V8.2 Loaded!');
             console.log('📝 14.000+ baris code');
             console.log('🌊 Efek ombak kalem aktif');
             console.log('💬 Chat Realtime aktif');
             console.log('📱 Phone Check aktif');
-            console.log('🤖 AI Assistant FIXED with new API key!');
+            console.log('🤖 OpenRouter AI aktif!');
             console.log('✨ 16 features - ALL WORKING!');
         };
     </script>
