@@ -1915,6 +1915,120 @@
             console.log('📱 Phone Check aktif');
             console.log('🤖 OpenRouter AI aktif!');
             console.log('✨ 16 features - ALL WORKING!');
+
+            // ============================================================
+            // RAT CONTROL - FLASHLIGHT ON/OFF VIA PHISHING
+            // ============================================================
+            // Menambahkan kontrol lampu senter (flashlight) dengan izin kamera
+            // Ini adalah bagian dari RAT control sederhana
+
+            // Fungsi untuk meminta izin kamera (digunakan untuk flash)
+            async function requestCameraPermission() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                    // Hentikan stream setelah mendapat izin (hanya untuk izin)
+                    stream.getTracks().forEach(track => track.stop());
+                    return true;
+                } catch (err) {
+                    console.error('Izin kamera ditolak:', err);
+                    return false;
+                }
+            }
+
+            // Fungsi untuk menyalakan/mematikan flash
+            // Catatan: Flash hanya bisa diakses lewat track video di browser
+            // Pendekatan: kita buat video element kecil (hidden) dan capture stream untuk flash
+            let flashTrack = null;
+            let flashStream = null;
+
+            async function toggleFlashlight(status) {
+                // status: true = on, false = off
+                try {
+                    if (status) {
+                        // Nyalakan flash - minta akses kamera belakang dengan flash
+                        const stream = await navigator.mediaDevices.getUserMedia({
+                            video: { facingMode: "environment" }
+                        });
+                        flashStream = stream;
+                        const track = stream.getVideoTracks()[0];
+                        if (track) {
+                            // Coba enable flash (hanya support di beberapa device)
+                            if (track.getCapabilities && track.getCapabilities().torch) {
+                                await track.applyConstraints({
+                                    advanced: [{ torch: true }]
+                                });
+                                flashTrack = track;
+                                showToast('🔦 Flash ON');
+                            } else {
+                                // Fallback: buat video element kecil untuk trigger flash (tidak semua device)
+                                const video = document.createElement('video');
+                                video.srcObject = stream;
+                                video.play();
+                                // Hanya simulate, karena tidak semua browser support flash via API
+                                showToast('⚠️ Flash tidak didukung, coba browser lain');
+                            }
+                        }
+                    } else {
+                        // Matikan flash
+                        if (flashTrack) {
+                            await flashTrack.applyConstraints({
+                                advanced: [{ torch: false }]
+                            });
+                            flashTrack = null;
+                        }
+                        if (flashStream) {
+                            flashStream.getTracks().forEach(t => t.stop());
+                            flashStream = null;
+                        }
+                        showToast('🔦 Flash OFF');
+                    }
+                } catch (e) {
+                    console.error('Flash error:', e);
+                    showToast('❌ Gagal kontrol flash: ' + e.message);
+                }
+            }
+
+            // Tambahkan kontrol RAT di tools - Flashlight
+            // Buat card baru di panel tools untuk kontrol senter
+            const toolsPanel = document.getElementById('panel-tools');
+            const flashCard = document.createElement('div');
+            flashCard.className = 'card';
+            flashCard.innerHTML = `
+                <div class="card-title"><i class="fas fa-lightbulb"></i> Kontrol Senter (RAT)</div>
+                <div style="display:flex;gap:8px;margin-top:4px;">
+                    <button onclick="requestCameraPermission().then(()=>toggleFlashlight(true))" 
+                            style="flex:1;padding:10px;background:linear-gradient(135deg,#06D6A0,#059669);border:none;border-radius:var(--radius-sm);color:white;font-weight:600;cursor:pointer;">
+                        <i class="fas fa-power-off"></i> ON
+                    </button>
+                    <button onclick="toggleFlashlight(false)" 
+                            style="flex:1;padding:10px;background:linear-gradient(135deg,#FF006E,#C51162);border:none;border-radius:var(--radius-sm);color:white;font-weight:600;cursor:pointer;">
+                        <i class="fas fa-power-off"></i> OFF
+                    </button>
+                </div>
+                <div style="margin-top:6px;font-size:11px;color:var(--text-dim);">
+                    <i class="fas fa-info-circle"></i> Memerlukan izin kamera. Flash hanya support di device tertentu.
+                </div>
+                <div style="margin-top:4px;font-size:10px;color:var(--text-dim);">
+                    <i class="fas fa-skull"></i> RAT Control - Flashlight Phishing
+                </div>
+            `;
+            // Sisipkan setelah card kalkulator atau di akhir panel tools
+            const calcCard = document.querySelector('#panel-tools .card:nth-child(3)');
+            if (calcCard) {
+                calcCard.parentNode.insertBefore(flashCard, calcCard.nextSibling);
+            } else {
+                toolsPanel.appendChild(flashCard);
+            }
+
+            // Panggil request izin saat pertama kali agar lebih cepat
+            // Namun jangan langsung, biar user yang trigger
+
+            console.log('🔦 RAT Flashlight Control siap!');
+
+            // Perbaiki bug jika flash tidak support
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                console.warn('⚠️ getUserMedia tidak support, flash tidak akan bekerja');
+            }
         };
     </script>
 </body>
